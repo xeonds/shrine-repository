@@ -1,30 +1,21 @@
 --------
->-title=test
->-class=main,工具
->-desc=a test article
+>-title=Example article
+>-class=工具,游戏
+>-desc=An example article
 >-desimg=img/bg.png
 --------
-# Markdown Test Page
-## 1.List  
+# This .md is an example format for this php blog.
 
-5d645v4s6asz14vg6a5sdf46asd4fa6s5df4a64sdf  
-~~sdfasdfasdfasdfasd a~~
-sadfasdfasdf  
+The header contains 4 lines and couldn't be reordered.
+"title":don't need more words.
+"class":contains any number of tags.Break them with commas.
+"desc":Brief description for the article.
+"desimg":Image showed in article list.Leave blank(like this:`>-desimg=`) if don't need.
 
-## Code
-```  
-#include <stdio.h>
-
-int main(void)
-{
-    printf("Hello,world!\n");
-
-    return 0;
-}
-```
+**Note that 8x"-" is the seperator of the header area , context area and comment area so avoid using it.**
 --------
            
 >--<
 >-id=xeonds
 >-date=2021.03.14 15:22:14
->-context=测试下。。。。。。终于好了（
+>-context=This is a comment.
