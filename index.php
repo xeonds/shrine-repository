@@ -128,7 +128,7 @@ function setting($option)
             $article_date = date('Y-m-d', filectime($item["path"][$xi]));
             echo '
             <tr>
-                <td><a href="' . urlencode($item["path"][$xi]) . '" target="_blank">' . $article_title . '</a></td>
+                <td><a href="index.php?article=' . urlencode($item["path"][$xi]) . '" target="_blank">' . $article_title . '</a></td>
                 <td>' . $article_size . '</td>
                 <td>' . $article_date . '</td>
                 <td>
