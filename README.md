@@ -1,7 +1,7 @@
 # Shirine-Repository
 A simple php blog with markdown support.
 ## About this name
-Emmm... as you see,it's a touhou-themed blog thus many touhou elements are inside it.
+Emmm... as you see,it's a touhou-themed blog thus containing many touhou elements.
 ## Figures
 * support markdown
 * online writing(but too simple)
