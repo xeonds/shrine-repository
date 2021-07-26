@@ -1,0 +1,19 @@
+{
+    "site_name": "储物间",
+    "sub_title": "“我节操放哪去了？”",
+    "site_footer": "夢想天生",
+    "all_category": [
+        "计算机",
+        "东方project",
+        "工具"
+    ],
+    "admin_password": "1672",
+    "time_begin": "2020",
+    "enable_animation": "true",
+    "enable_msg_board": "true",
+    "enable_comment": "true",
+    "enable_unsort": "true",
+    "enable_login_entrance": "true",
+    "open_link_in_new_tag": null,
+    "enable_tags": "true"
+}
