@@ -1,6 +1,7 @@
 # 神社的储物间
 
->点击访问：<http://mxts.jiujiuer.xyz/pages/repo/index.php>
+>点击访问：<http://mxts.jiujiuer.xyz/pages/repo/index.php>  
+>源码下载（密码90xa）：<https://dreamweb.lanzoui.com/b016lkrfg>
 
 一个简单的PHP博客。内含车万要素（×
 >一个车万要素，内含简单的PHP博客（√  
