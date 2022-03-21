@@ -1,5 +1,6 @@
 # 神社的储物间
->2022.02.27：之前写的实在太烂了，回头重构下
+>2022.02.27：之前写的实在太烂了，回头重构下  
+2022.03.21：新分支建立了。以后发个7.x的release再合并吧
 ---
 >点击访问：<http://mxts.jiujiuer.xyz/pages/repo/index.php>  
 >源码下载（密码90xa）：<https://dreamweb.lanzoui.com/b016lkrfg>
