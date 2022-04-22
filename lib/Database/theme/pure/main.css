@@ -175,10 +175,23 @@ h1{
     margin-bottom: 30px;
 }
 
-table{
-    width:100%;
-    overflow-x:auto;
-    -webkit-overflow-scrolling:touch
+.main-content>table{
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+}
+
+.main-content>table>*>*>th,
+.main-content>table>*>*>td
+{
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    line-height: 1.2rem;
 }
 
 a{

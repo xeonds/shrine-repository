@@ -275,7 +275,7 @@ class UI
 
         foreach ($item as $val)
         {
-            $article = Text::article_parser($val["path"], HTML_ENTITIES);
+            $article = Text::article_parser($val["path"]);
             $title = $article["head"]["title"];
             $article_category = $article["head"]["class"];
             $desc = $article["head"]["desc"];
@@ -322,6 +322,14 @@ class UI
     {
         $setting = new Setting;
         $parser = new HyperDown\Parser;
+        $parser->enableHtml(true);
+        $parser->_commonWhiteList .= '|img|cite|embed|iframe|video|source';
+        $parser->_specialWhiteList = array_merge($parser->_specialWhiteList, array(
+                        'ol'            =>  'ol|li',
+                        'ul'            =>  'ul|li',
+                        'blockquote'    =>  'blockquote',
+                        'pre'           =>  'pre|code'
+            ));
         $article = Text::article_parser($path, HTML_ENTITIES);
 
         if ($setting->get("enable_comment"))
@@ -344,7 +352,11 @@ class UI
             $data = '';
         }
         $kword = array('{title}', '{author}', '{date}', '{content}', '{2}');
-        $param = array($article['head']['title'], $article["head"]["author"], $article["head"]["date"], $parser->makeHtml(Text::article_parser($path)["content"]), $data);
+        $param = array($article['head']['title'], $article["head"]["author"], $article["head"]["date"], 
+                    $parser->makeHtml(Text::article_parser($path)["content"]),
+                    //using a new php parser lib
+                    //Parsedown::instance()->text(Text::article_parser($path)["content"]),
+                    $data);
 
         return str_replace($kword, $param, $this->theme['html']['article'][0]);
     }
@@ -1053,7 +1065,7 @@ class Text
             '>-date=' . $param["date"] . PHP_EOL .
             '--------' . PHP_EOL .
             $param["content"] .
-            '--------' .
+            '--------' . PHP_EOL .
             $param[3];
 
         return $data;
