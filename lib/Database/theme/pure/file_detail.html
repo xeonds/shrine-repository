@@ -1,0 +1,29 @@
+<div id="main">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <div class="main-content">
+            <h3>文件：{file_name}</h3>
+            <div class="item">
+                <hr/>
+                目录名称: {dir_name}<br/>
+                文件类型：{file_type}<br/>
+                文件大小：{file_size}<br/>
+                文件创建时间：{filectime}<br/>
+                文件修改时间：{filemtime}<br/>
+                最后访问时间：{fileatime}<br/>
+                <hr/>
+            </div>
+            <div class="item">
+                <h3>操作</h3>
+                    <div class="d-flex justify-content-around align-items-center">
+                        <a href="{path}" target="_blank" download="" class="btn btn-danger">点击下载</a>
+                        <template>
+                            <template><a href="{path}" target="_blank" class="btn btn-danger">点击预览</a></template>
+                            <template><a href="lib/PDF.js/web/viewer.html?file=../../../{path}" target="_blank" class="btn btn-danger">点击预览</a></template>
+                        </template>
+                    </div>
+                <hr/><br/>
+                注意：文件预览仅对图片，音乐（如果浏览器支持，如Chrome等）有效。其他文件类型会直接下载。
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+{
+    "version": "1.0",
+    "author": "xeonds",
+    "name": "pure",
+    "file": [
+        "html",
+        "css",
+        "png",
+        "js"
+    ],
+    "removable": false
+}

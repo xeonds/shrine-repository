@@ -1,0 +1,34 @@
+<div id="main">
+    <div class="d-flex flex-column align-items-center">
+        <div class="main-content">
+            <h2 class="align-self-start">{category}</h2>
+            <template>
+                <template>
+                    <article class="flex-fill">
+                        <a href="index.php?page=article&article={article_path}" class="text-danger">
+                        <h3>{article_title}</h3>
+                        <div class="content">
+                                <div class="right">
+                                    <p>{article_desc}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                </template>
+            <template>
+                    <article class="flex-fill">
+                        <a href="index.php?page=article&article={article_path}" class="text-danger">
+                            <h3>{article_title}</h3>
+                            <div class="d-flex flex-row align-items-center">
+                                <img src="{article_des_img}" alt="" class="article-img">
+                                <div>
+                                    <p>{article_desc}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </article>
+                </template>
+            </template>
+        </div>
+    </div>
+</div>

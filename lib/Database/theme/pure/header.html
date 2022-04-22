@@ -1,0 +1,19 @@
+<div id="header" class="d-flex flex-column justify-content-around align-items-center">
+    <div id="left" class="d-flex flex-sm-row flex-column justify-content-center align-items-center">
+        <img src="{title_png}" class="logo">
+        <blockquote id="sub_title" class="text-white">{sub_title}</blockquote>
+    </div>
+
+    <div id="right" class="d-flex flex-row justify-content-around  align-items-center flex-wrap">
+        <template><template>
+            <input type="text" class="form-control" style="margin: 1rem;" id="search" value="" placeholder="找找看？" onkeydown="search(arguments[0])" />
+        </template>
+        <template>
+            <button onClick="window.location.href='{url}'" class="btn btn-danger text-white header-button">{text}</button>
+        </template>
+        <template>
+            <button onClick="{func}" class="btn btn-danger text-white header-button">{text}</button>
+        </template></template>
+    </div>
+
+</div>

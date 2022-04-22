@@ -1,0 +1,221 @@
+<template>
+    <div id="send-comment" class="container" style="display:none;">
+        <div class="d-flex flex-column align-items-center">
+            <div class="main-content">
+                <div class="d-flex flex-row justify-content-between">
+                    <div>
+                        <h2>{lang:comment}</h2>    
+                    </div>
+                    <div>
+                        <button onClick="toggle('send-comment')" class="btn btn-danger">{lang:close}</button>    
+                    </div>
+                </div>
+                <form action="index.php?option=comment_article" method="post">
+                    <div class="form-group">
+                        <label for="comment-id">{lang:user_name}</label>
+                        <input type="text" name="comment-id" class="form-control" id="comment-id" placeholder="{lang:user_name}" {id}>
+                    </div>
+                    <input type="hidden" name="comment-article" value="{path}">
+                    <div class="form-group">
+                        <label for="comment_content">{lang:comment_content}</label>
+                        <textarea class="form-control" name="comment-content" rows="5" id="comment_content" placeholder="{lang:comment_content}"></textarea>
+                    </div>
+                    <button name="comment-send" class="btn btn-danger">{lang:send}</button>
+                </form>    
+            </div>
+        </div>
+    </div>
+</template>
+<template>
+    <div id="editor" style="display:none;" class="container-fluid">
+        <div class="d-flex flex-column container-fluid align-items-center">
+            <div id="editor" class="main-content">
+                <div class="d-flex flex-row justify-content-between">
+                     <h2>{lang:edit_article}</h2>
+                    <button onClick="toggle('editor')" class="btn btn-danger">{lang:close}</button>
+                </div>
+                <form action="index.php?option=edit_article" method="post" class="">
+                    <div class="form-group">
+                        <label for="title">{lang:title}</label>
+                        <input type="text" name="title" value="{title}" class="form-control" id="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="class">{lang:class}</label>
+                        <input type="text" name="class" value="{class}" class="form-control" id="class">
+                    </div>
+                    <div class="form-group">
+                        <label for="desc">{lang:summary}</label>
+                        <input type="text" name="desc" value="{desc}" class="form-control" id="desc">
+                    </div>
+                    <div class="form-group">
+                        <label for="desimg">{lang:title_img_link}</label>
+                        <input type="text" name="desimg" value="{desimg}" class="form-control" id="desimg">
+                    </div>
+                    <div class="form-group">
+                        <label for="author">{lang:author}</label>
+                        <input type="text" name="author" value="{author}" class="form-control" id="author">
+                    </div>
+                    <div class="form-group">
+                        <label for="create_time">{lang:create_time}</label>
+                        <input type="text" name="date" value="{create_time}" class="form-control" id="create_time">
+                    </div>
+                    <input type="hidden" name="path" value="{path}">
+                    <div class="form-group">
+                        <label for="comment">{lang:content}</label>
+                        <textarea class="form-control" name="content" rows="20" id="comment">{content}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger">{lang:change}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<template>
+    <div id="editor" style="display:none;" class="container-fluid">
+        <div class="d-flex flex-column container-fluid align-items-center">
+            <div id="editor" class="main-content">
+                <div class="d-flex flex-row justify-content-between">
+                     <h2>{lang:edit_article}</h2>
+                    <button onClick="toggle('editor')" class="btn btn-danger">{lang:close}</button>
+                </div>
+                <form action="index.php?option=new_article" method="post">
+                    <div class="form-group">
+                        <label for="title">{lang:title}</label>
+                        <input type="text" name="article-title" class="form-control" id="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="class">{lang:class}</label>
+                        <input type="text" name="article-class" class="form-control" id="class">
+                    </div>
+                    <div class="form-group">
+                        <label for="desc">{lang:summary}</label>
+                        <input type="text" name="article-desc" class="form-control" id="desc">
+                    </div>
+                    <div class="form-group">
+                        <label for="desimg">{lang:title_img_link}</label>
+                        <input type="text" name="article-desimg" class="form-control" id="desimg">
+                    </div>
+                    <div class="form-group">
+                        <label for="author">{lang:author}</label>
+                        <input type="text" name="article-author" class="form-control" value="{admin_id}" id="author">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">{lang:content}</label>
+                        <textarea class="form-control" name="article-content" rows="20" id="comment"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-danger">{lang:release}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<template>
+    <div id="login" class="container float-window" style="display:none;">
+        <div class="d-flex flex-column align-items-center">
+            <div>
+                <div class="d-flex flex-row justify-content-between">
+                    <div>
+                        <h2>{lang:login}</h2>
+                    </div>
+                    <div>
+                        <button onClick="toggle('login')" class="btn btn-danger">{lang:close}</button>
+                    </div>
+                </div>
+                <form method="post" action="index.php?option=login">
+                    <div class="form-group">
+                        <label for="password">{lang:enter_pwd}</label>
+                        <input type="password" name="password" class="form-control" id="password">
+                    </div>
+                    <button class="btn btn-danger" name="login">{lang:login}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<template>
+    <div id="send-comment" class="container" style="display:none;">
+        <div class="d-flex flex-column align-items-center">
+            <div class="main-content">
+                <div class="d-flex flex-row justify-content-between">
+                    <div>
+                        <h2>{lang:leave_msg}</h2>    
+                    </div>
+                    <div>
+                        <button onClick="toggle('send-comment')" class="btn btn-danger">{lang:close}</button>    
+                    </div>
+                </div>
+                <form action="index.php?option=new_msg" method="post">
+                    <div class="form-group">
+                        <label for="comment-id">{lang:user_name}</label>
+                        <input type="text" name="comment-id" class="form-control" id="comment-id" placeholder="{lang:user_name}" {id}>
+                    </div>
+                    <input type="hidden" name="comment-article" value="{path}">
+                    <div class="form-group">
+                        <label for="comment_content">{lang:comment_content}</label>
+                        <textarea class="form-control" name="comment-content" rows="5" id="comment_content" placeholder="{lang:comment_content}"></textarea>
+                    </div>
+                    <button name="comment-send" class="btn btn-danger">{lang:send}</button>
+                </form>    
+            </div>
+        </div>
+    </div>
+</template>
+<template>
+    <div id="upload" class="container float-window" style="display:none;">
+        <div class="d-flex flex-column align-items-center">
+            <div>
+                <div class="d-flex flex-row justify-content-between">
+                    <div><h2>{lang:upload}</h2></div>
+                    <div><button class="btn btn-danger" onClick="toggle('upload')">{lang:close}</button></div>
+                </div>
+                <form action="index.php?option=upload_link" method="post">
+                    <h3>{lang:upload_link}</h3>
+                    <div class="form-group">
+                        <label>{lang:address}</label>
+                        <input type="text" name="link-path" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>{lang:name}</label>
+                        <input type="text" name="link-name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>{lang:size}</label>
+                        <input type="text" name="link-size" class="form-control">
+                    </div>
+                    <input type="hidden" name="upload-path" value="{path}">
+                    <button type="submit" class="btn btn-danger">{lang:upload_link}</button>
+                </form>
+                <hr />
+                <form action="index.php?option=upload_file" method="post" enctype="multipart/form-data">
+                    <h3>{lang:upload_file}</h3>
+                    <div class="form-group">
+                        <label for="file" type="email" class="form-control">{lang:select_file}</label>
+                        <input type="file" name="file" id="file" style="display:none;">
+                    </div>
+                    <input type="hidden" name="upload-path" value="{path}">
+                    <button type="submit" class="btn btn-danger">{lang:upload_file}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
+<template>
+    <div id="recover" class="container float-window" style="display:none;">
+        <div class="d-flex flex-column align-items-center">
+            <div>
+                <div class="d-flex flex-row justify-content-between">
+                    <div><h2>上传备份文件</h2></div>
+                    <div><button class="btn btn-danger" onClick="toggle('recover')">{lang:close}</button></div>
+                </div>
+                <form action="index.php?option=recover" method="post" enctype="multipart/form-data">
+                    <h3>{lang:upload_file}</h3>
+                    <div class="form-group">
+                        <label for="file" type="email" class="form-control">{lang:select_file}</label>
+                        <input type="file" name="file" id="file" style="display:none;">
+                    </div>
+                    <button type="submit" class="btn btn-danger">{lang:recover}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</template>
