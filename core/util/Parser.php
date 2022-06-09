@@ -141,16 +141,25 @@ class Parser
         $this->_uniqid = md5(uniqid());
         $this->_id = 0;
 
-        usort($this->blockParsers, function ($a, $b) {
+        usort($this->blockParsers, function ($a, $b)
+        {
             return $a[1] < $b[1] ? -1 : 1;
         });
 
+<<<<<<< HEAD:core/util/Parser.php
+        foreach ($this->blockParsers as $parser)
+        {
+=======
         foreach ($this->blockParsers as $parser) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             list($name) = $parser;
 
-            if (isset($parser[2])) {
+            if (isset($parser[2]))
+            {
                 $this->_parsers[$name] = $parser[2];
-            } else {
+            }
+            else
+            {
                 $this->_parsers[$name] = array($this, 'parseBlock' . ucfirst($name));
             }
         }
@@ -195,7 +204,7 @@ class Parser
     public function makeHolder($str)
     {
         $key = "\r" . $this->_uniqid . $this->_id . "\r";
-        $this->_id ++;
+        $this->_id++;
         $this->_holders[$key] = $str;
 
         return $key;
@@ -217,20 +226,25 @@ class Parser
      */
     private function makeFootnotes($html)
     {
-        if (count($this->_footnotes) > 0) {
+        if (count($this->_footnotes) > 0)
+        {
             $html .= '<div class="footnotes"><hr><ol>';
             $index = 1;
 
-            while ($val = array_shift($this->_footnotes)) {
-                if (is_string($val)) {
+            while ($val = array_shift($this->_footnotes))
+            {
+                if (is_string($val))
+                {
                     $val .= " <a href=\"#fnref-{$index}\" class=\"footnote-backref\">&#8617;</a>";
-                } else {
+                }
+                else
+                {
                     $val[count($val) - 1] .= " <a href=\"#fnref-{$index}\" class=\"footnote-backref\">&#8617;</a>";
                     $val = count($val) > 1 ? $this->parse(implode("\n", $val)) : $this->parseInline($val[0]);
                 }
 
                 $html .= "<li id=\"fn-{$index}\">{$val}</li>";
-                $index ++;
+                $index++;
             }
 
             $html .= '</ol></div>';
@@ -253,11 +267,17 @@ class Parser
         $html = '';
 
         // inline mode for single normal block
-        if ($inline && count($blocks) == 1 && $blocks[0][0] == 'normal') {
+        if ($inline && count($blocks) == 1 && $blocks[0][0] == 'normal')
+        {
             $blocks[0][3] = true;
         }
 
+<<<<<<< HEAD:core/util/Parser.php
+        foreach ($blocks as $block)
+        {
+=======
         foreach ($blocks as $block) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             list($type, $start, $end, $value) = $block;
             $extract = array_slice($lines, $start, $end - $start + 1);
             $method = 'parse' . ucfirst($type);
@@ -280,12 +300,14 @@ class Parser
     private function releaseHolder($text, $clearHolders = true)
     {
         $deep = 0;
-        while (strpos($text, "\r") !== false && $deep < 10) {
+        while (strpos($text, "\r") !== false && $deep < 10)
+        {
             $text = str_replace(array_keys($this->_holders), array_values($this->_holders), $text);
-            $deep ++;
+            $deep++;
         }
 
-        if ($clearHolders) {
+        if ($clearHolders)
+        {
             $this->_holders = array();
         }
 
@@ -299,7 +321,8 @@ class Parser
      */
     private function markLine($start, $end = -1)
     {
-        if ($this->_line) {
+        if ($this->_line)
+        {
             $end = $end < 0 ? $start : $end;
             return '<span class="line" data-start="' . $start
                 . '" data-end="' . $end . '" data-id="' . $this->_uniqid . '"></span>';
@@ -317,8 +340,14 @@ class Parser
     {
         $i = -1;
 
+<<<<<<< HEAD:core/util/Parser.php
+        return $this->_line ? array_map(function ($line) use ($start, &$i)
+        {
+            $i++;
+=======
         return $this->_line ? array_map(function ($line) use ($start, &$i) {
             $i ++;
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             return $this->markLine($start + $i) . $line;
         }, $lines) : $lines;
     }
@@ -332,17 +361,24 @@ class Parser
         $last = 0;
 
         return $this->_line ?
-            preg_replace_callback("/class=\"line\" data\-start=\"([0-9]+)\" data\-end=\"([0-9]+)\" (data\-id=\"{$this->_uniqid}\")/",
-                function ($matches) use (&$last) {
-                    if ($matches[1] != $last) {
+            preg_replace_callback(
+                "/class=\"line\" data\-start=\"([0-9]+)\" data\-end=\"([0-9]+)\" (data\-id=\"{$this->_uniqid}\")/",
+                function ($matches) use (&$last)
+                {
+                    if ($matches[1] != $last)
+                    {
                         $replace = 'class="line" data-start="' . $last . '" data-start-original="' . $matches[1] . '" data-end="' . $matches[2] . '" ' . $matches[3];
-                    } else {
+                    }
+                    else
+                    {
                         $replace = $matches[0];
                     }
 
                     $last = $matches[2] + 1;
                     return $replace;
-                }, $html) : $html;
+                },
+                $html
+            ) : $html;
     }
 
     /**
@@ -352,14 +388,16 @@ class Parser
      */
     private function call($type, $value)
     {
-        if (empty($this->_hooks[$type])) {
+        if (empty($this->_hooks[$type]))
+        {
             return $value;
         }
 
         $args = func_get_args();
         $args = array_slice($args, 1);
 
-        foreach ($this->_hooks[$type] as $callback) {
+        foreach ($this->_hooks[$type] as $callback)
+        {
             $value = call_user_func_array($callback, $args);
             $args[0] = $value;
         }
@@ -383,7 +421,12 @@ class Parser
         // code
         $text = preg_replace_callback(
             "/(^|[^\\\])(`+)(.+?)\\2/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return  $matches[1] . $this->makeHolder(
                     '<code>' . htmlspecialchars($matches[3]) . '</code>'
                 );
@@ -394,7 +437,12 @@ class Parser
         // mathjax
         $text = preg_replace_callback(
             "/(^|[^\\\])(\\$+)(.+?)\\2/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return  $matches[1] . $this->makeHolder(
                     $matches[2] . htmlspecialchars($matches[3]) . $matches[2]
                 );
@@ -405,7 +453,12 @@ class Parser
         // escape
         $text = preg_replace_callback(
             "/\\\(.)/u",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $prefix = preg_match("/^[-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]$/", $matches[1]) ? '' : '\\';
                 $escaped = htmlspecialchars($matches[1]);
                 $escaped = str_replace('$', '&dollar;', $escaped);
@@ -417,7 +470,12 @@ class Parser
         // link
         $text = preg_replace_callback(
             "/<(https?:\/\/.+|(?:mailto:)?[_a-z0-9-\.\+]+@[_\w-]+(?:\.[a-z]{2,})+)>/i",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $url = $this->cleanUrl($matches[1]);
                 $link = $this->call('parseLink', $url);
 
@@ -431,20 +489,41 @@ class Parser
         // encode unsafe tags
         $text = preg_replace_callback(
             "/<(\/?)([a-z0-9-]+)(\s+[^>]*)?>/i",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches) use ($whiteList)
+            {
+                if ($this->_html || false !== stripos(
+                    '|' . $this->_commonWhiteList . '|' . $whiteList . '|',
+                    '|' . $matches[2] . '|'
+                ))
+                {
+                    return $this->makeHolder($matches[0]);
+                }
+                else
+                {
+=======
             function ($matches) use ($whiteList) {
                 if ($this->_html || false !== stripos(
                     '|' . $this->_commonWhiteList . '|' . $whiteList . '|', '|' . $matches[2] . '|'
                 )) {
                     return $this->makeHolder($matches[0]);
                 } else {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     return $this->makeHolder(htmlspecialchars($matches[0]));
                 }
             },
             $text
         );
 
+<<<<<<< HEAD:core/util/Parser.php
+        if ($this->_html)
+        {
+            $text = preg_replace_callback("/<!\-\-(.*?)\-\->/", function ($matches)
+            {
+=======
         if ($this->_html) {
             $text = preg_replace_callback("/<!\-\-(.*?)\-\->/", function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return $this->makeHolder($matches[0]);
             }, $text);
         }
@@ -454,10 +533,19 @@ class Parser
         // footnote
         $text = preg_replace_callback(
             "/\[\^((?:[^\]]|\\\\\]|\\\\\[)+?)\]/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+                $id = array_search($matches[1], $this->_footnotes);
+
+                if (false === $id)
+                {
+=======
             function ($matches) {
                 $id = array_search($matches[1], $this->_footnotes);
 
                 if (false === $id) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     $id = count($this->_footnotes) + 1;
                     $this->_footnotes[$id] = $this->parseInline($matches[1], '', false);
                 }
@@ -472,11 +560,20 @@ class Parser
         // image
         $text = preg_replace_callback(
             "/!\[((?:[^\]]|\\\\\]|\\\\\[)*?)\]\(((?:[^\)]|\\\\\)|\\\\\()+?)\)/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+                $escaped = htmlspecialchars($this->escapeBracket($matches[1]));
+                $url = $this->escapeBracket($matches[2]);
+                list($url, $title) = $this->cleanUrl($url, true);
+                $title = empty($title) ? $escaped : " title=\"{$title}\"";
+=======
             function ($matches) {
                 $escaped = htmlspecialchars($this->escapeBracket($matches[1]));
                 $url = $this->escapeBracket($matches[2]);
                 list ($url, $title) = $this->cleanUrl($url, true);
                 $title = empty($title)? $escaped : " title=\"{$title}\"";
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
 
                 return $this->makeHolder(
                     "<img src=\"{$url}\" alt=\"{$title}\" title=\"{$title}\">"
@@ -487,10 +584,18 @@ class Parser
 
         $text = preg_replace_callback(
             "/!\[((?:[^\]]|\\\\\]|\\\\\[)*?)\]\[((?:[^\]]|\\\\\]|\\\\\[)+?)\]/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+                $escaped = htmlspecialchars($this->escapeBracket($matches[1]));
+
+                $result = isset($this->_definitions[$matches[2]]) ?
+=======
             function ($matches) {
                 $escaped = htmlspecialchars($this->escapeBracket($matches[1]));
 
                 $result = isset( $this->_definitions[$matches[2]] ) ?
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     "<img src=\"{$this->_definitions[$matches[2]]}\" alt=\"{$escaped}\" title=\"{$escaped}\">"
                     : $escaped;
 
@@ -502,12 +607,25 @@ class Parser
         // link
         $text = preg_replace_callback(
             "/\[((?:[^\]]|\\\\\]|\\\\\[)+?)\]\(((?:[^\)]|\\\\\)|\\\\\()+?)\)/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+                $escaped = $this->parseInline(
+                    $this->escapeBracket($matches[1]),
+                    '',
+                    false,
+                    false
+                );
+                $url = $this->escapeBracket($matches[2]);
+                list($url, $title) = $this->cleanUrl($url, true);
+=======
             function ($matches) {
                 $escaped = $this->parseInline(
                     $this->escapeBracket($matches[1]),  '',  false, false
                 );
                 $url = $this->escapeBracket($matches[2]);
                 list ($url, $title) = $this->cleanUrl($url, true);
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $title = empty($title) ? '' : " title=\"{$title}\"";
 
                 return $this->makeHolder("<a href=\"{$url}\"{$title}>{$escaped}</a>");
@@ -517,11 +635,22 @@ class Parser
 
         $text = preg_replace_callback(
             "/\[((?:[^\]]|\\\\\]|\\\\\[)+?)\]\[((?:[^\]]|\\\\\]|\\\\\[)+?)\]/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+                $escaped = $this->parseInline(
+                    $this->escapeBracket($matches[1]),
+                    '',
+                    false
+                );
+                $result = isset($this->_definitions[$matches[2]]) ?
+=======
             function ($matches) {
                 $escaped = $this->parseInline(
                     $this->escapeBracket($matches[1]),  '',  false
                 );
                 $result = isset( $this->_definitions[$matches[2]] ) ?
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     "<a href=\"{$this->_definitions[$matches[2]]}\">{$escaped}</a>"
                     : $escaped;
 
@@ -539,10 +668,16 @@ class Parser
         );
 
         // autolink url
-        if ($enableAutoLink) {
+        if ($enableAutoLink)
+        {
             $text = preg_replace_callback(
                 "/(^|[^\"])(https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\b([-a-zA-Z0-9@:%_\+.~#?&\/=]*)|(?:mailto:)?[_a-z0-9-\.\+]+@[_\w-]+(?:\.[a-z]{2,})+)($|[^\"])/",
+<<<<<<< HEAD:core/util/Parser.php
+                function ($matches)
+                {
+=======
                 function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     $url = $this->cleanUrl($matches[2]);
                     $link = $this->call('parseLink', $matches[2]);
                     return "{$matches[1]}<a href=\"{$url}\">{$link}</a>{$matches[5]}";
@@ -567,7 +702,12 @@ class Parser
     {
         $text = preg_replace_callback(
             "/(\*{3})(.+?)\\1/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return  '<strong><em>' .
                     $this->parseInlineCallback($matches[2]) .
                     '</em></strong>';
@@ -577,7 +717,12 @@ class Parser
 
         $text = preg_replace_callback(
             "/(\*{2})(.+?)\\1/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return  '<strong>' .
                     $this->parseInlineCallback($matches[2]) .
                     '</strong>';
@@ -587,7 +732,12 @@ class Parser
 
         $text = preg_replace_callback(
             "/(\*)(.+?)\\1/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return  '<em>' .
                     $this->parseInlineCallback($matches[2]) .
                     '</em>';
@@ -597,7 +747,12 @@ class Parser
 
         $text = preg_replace_callback(
             "/(\s+|^)(_{3})(.+?)\\2(\s+|$)/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return  $matches[1] . '<strong><em>' .
                     $this->parseInlineCallback($matches[3]) .
                     '</em></strong>' . $matches[4];
@@ -607,7 +762,12 @@ class Parser
 
         $text = preg_replace_callback(
             "/(\s+|^)(_{2})(.+?)\\2(\s+|$)/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return  $matches[1] . '<strong>' .
                     $this->parseInlineCallback($matches[3]) .
                     '</strong>' . $matches[4];
@@ -617,7 +777,12 @@ class Parser
 
         $text = preg_replace_callback(
             "/(\s+|^)(_)(.+?)\\2(\s+|$)/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return  $matches[1] . '<em>' .
                     $this->parseInlineCallback($matches[3]) .
                     '</em>' . $matches[4];
@@ -627,7 +792,12 @@ class Parser
 
         $text = preg_replace_callback(
             "/(~{2})(.+?)\\1/",
+<<<<<<< HEAD:core/util/Parser.php
+            function ($matches)
+            {
+=======
             function ($matches) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 return  '<del>' .
                     $this->parseInlineCallback($matches[2]) .
                     '</del>';
@@ -659,23 +829,29 @@ class Parser
         );
 
         // analyze by line
-        foreach ($lines as $key => $line) {
+        foreach ($lines as $key => $line)
+        {
             $block = $this->getBlock();
             $args = array($block, $key, $line, &$state, $lines);
 
-            if ($this->_current != 'normal') {
+            if ($this->_current != 'normal')
+            {
                 $pass = call_user_func_array($this->_parsers[$this->_current], $args);
 
-                if (!$pass) {
+                if (!$pass)
+                {
                     continue;
                 }
             }
 
-            foreach ($this->_parsers as $name => $parser) {
-                if ($name != $this->_current) {
+            foreach ($this->_parsers as $name => $parser)
+            {
+                if ($name != $this->_current)
+                {
                     $pass = call_user_func_array($parser, $args);
 
-                    if (!$pass) {
+                    if (!$pass)
+                    {
                         break;
                     }
                 }
@@ -694,6 +870,21 @@ class Parser
      */
     private function parseBlockList($block, $key, $line, &$state)
     {
+<<<<<<< HEAD:core/util/Parser.php
+        if ($this->isBlock('list') && !preg_match("/^\s*\[((?:[^\]]|\\]|\\[)+?)\]:\s*(.+)$/", $line))
+        {
+            if (preg_match("/^(\s*)(~{3,}|`{3,})([^`~]*)$/i", $line))
+            {
+                // ignore code
+                return true;
+            }
+            elseif (
+                $state['empty'] <= 1
+                && preg_match("/^(\s*)\S+/", $line, $matches)
+                && strlen($matches[1]) >= ($block[3][0] + $state['empty'])
+            )
+            {
+=======
         if ($this->isBlock('list') && !preg_match("/^\s*\[((?:[^\]]|\\]|\\[)+?)\]:\s*(.+)$/", $line)) {
             if (preg_match("/^(\s*)(~{3,}|`{3,})([^`~]*)$/i", $line)) {
                 // ignore code
@@ -701,24 +892,48 @@ class Parser
             } elseif ($state['empty'] <= 1
                 && preg_match("/^(\s*)\S+/", $line, $matches)
                 && strlen($matches[1]) >= ($block[3][0] + $state['empty'])) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
 
                 $state['empty'] = 0;
                 $this->setBlock($key);
                 return false;
+<<<<<<< HEAD:core/util/Parser.php
+            }
+            elseif (preg_match("/^(\s*)$/", $line) && $state['empty'] == 0)
+            {
+                $state['empty']++;
+=======
             } elseif (preg_match("/^(\s*)$/", $line) && $state['empty'] == 0) {
                 $state['empty'] ++;
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $this->setBlock($key);
                 return false;
             }
         }
 
-        if (preg_match("/^(\s*)((?:[0-9]+\.)|\-|\+|\*)\s+/i", $line, $matches)) {
+        if (preg_match("/^(\s*)((?:[0-9]+\.)|\-|\+|\*)\s+/i", $line, $matches))
+        {
             $space = strlen($matches[1]);
             $tab = strlen($matches[0]) - $space;
             $state['empty'] = 0;
             $type = false !== strpos('+-*', $matches[2]) ? 'ul' : 'ol';
 
             // opened
+<<<<<<< HEAD:core/util/Parser.php
+            if ($this->isBlock('list'))
+            {
+                if ($space < $block[3][0] || ($space == $block[3][0] && $type != $block[3][1]))
+                {
+                    $this->startBlock('list', $key, [$space, $type, $tab]);
+                }
+                else
+                {
+                    $this->setBlock($key);
+                }
+            }
+            else
+            {
+=======
             if ($this->isBlock('list')) {
                 if ($space < $block[3][0] || ($space == $block[3][0] && $type != $block[3][1])) {
                     $this->startBlock('list', $key, [$space, $type, $tab]);
@@ -726,6 +941,7 @@ class Parser
                     $this->setBlock($key);
                 }
             } else {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $this->startBlock('list', $key, [$space, $type, $tab]);
             }
 
@@ -744,27 +960,50 @@ class Parser
      */
     private function parseBlockCode($block, $key, $line, &$state)
     {
+<<<<<<< HEAD:core/util/Parser.php
+        if (preg_match("/^(\s*)(~{3,}|`{3,})([^`~]*)$/i", $line, $matches))
+        {
+            if ($this->isBlock('code'))
+            {
+                if ($state['code'] != $matches[2])
+                {
+=======
         if (preg_match("/^(\s*)(~{3,}|`{3,})([^`~]*)$/i", $line, $matches)) {
             if ($this->isBlock('code')) {
                 if ($state['code'] != $matches[2]) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     $this->setBlock($key);
                     return false;
                 }
 
                 $isAfterList = $block[3][2];
 
+<<<<<<< HEAD:core/util/Parser.php
+                if ($isAfterList)
+                {
+=======
                 if ($isAfterList) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     $state['empty'] = 0;
                     $this->combineBlock()
                         ->setBlock($key);
-                } else {
+                }
+                else
+                {
                     $this->setBlock($key)
                         ->endBlock();
                 }
-            } else {
+            }
+            else
+            {
                 $isAfterList = false;
 
+<<<<<<< HEAD:core/util/Parser.php
+                if ($this->isBlock('list'))
+                {
+=======
                 if ($this->isBlock('list')) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     $space = $block[3][0];
 
                     $isAfterList = strlen($matches[1]) >= $space + $state['empty'];
@@ -778,7 +1017,13 @@ class Parser
             }
 
             return false;
+<<<<<<< HEAD:core/util/Parser.php
+        }
+        elseif ($this->isBlock('code'))
+        {
+=======
         } elseif ($this->isBlock('code')) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             $this->setBlock($key);
             return false;
         }
@@ -795,16 +1040,27 @@ class Parser
      */
     private function parseBlockShtml($block, $key, $line, &$state)
     {
-        if ($this->_html) {
-            if (preg_match("/^(\s*)!!!(\s*)$/", $line, $matches)) {
-                if ($this->isBlock('shtml')) {
+        if ($this->_html)
+        {
+            if (preg_match("/^(\s*)!!!(\s*)$/", $line, $matches))
+            {
+                if ($this->isBlock('shtml'))
+                {
                     $this->setBlock($key)->endBlock();
-                } else {
+                }
+                else
+                {
                     $this->startBlock('shtml', $key);
                 }
 
                 return false;
+<<<<<<< HEAD:core/util/Parser.php
+            }
+            elseif ($this->isBlock('shtml'))
+            {
+=======
             } elseif ($this->isBlock('shtml')) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $this->setBlock($key);
                 return false;
             }
@@ -822,23 +1078,51 @@ class Parser
      */
     private function parseBlockAhtml($block, $key, $line, &$state)
     {
-        if ($this->_html) {
-            if (preg_match("/^\s*<({$this->_blockHtmlTags})(\s+[^>]*)?>/i", $line, $matches)) {
-                if ($this->isBlock('ahtml')) {
+        if ($this->_html)
+        {
+            if (preg_match("/^\s*<({$this->_blockHtmlTags})(\s+[^>]*)?>/i", $line, $matches))
+            {
+                if ($this->isBlock('ahtml'))
+                {
                     $this->setBlock($key);
                     return false;
+<<<<<<< HEAD:core/util/Parser.php
+                }
+                elseif (empty($matches[2]) || $matches[2] != '/')
+                {
+=======
                 } elseif (empty($matches[2]) || $matches[2] != '/') {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     $this->startBlock('ahtml', $key);
                     preg_match_all("/<({$this->_blockHtmlTags})(\s+[^>]*)?>/i", $line, $allMatches);
                     $lastMatch = $allMatches[1][count($allMatches[0]) - 1];
 
-                    if (strpos($line, "</{$lastMatch}>") !== false) {
+                    if (strpos($line, "</{$lastMatch}>") !== false)
+                    {
                         $this->endBlock();
-                    } else {
+                    }
+                    else
+                    {
                         $state['html'] = $lastMatch;
                     }
                     return false;
                 }
+<<<<<<< HEAD:core/util/Parser.php
+            }
+            elseif (!!$state['html'] && strpos($line, "</{$state['html']}>") !== false)
+            {
+                $this->setBlock($key)->endBlock();
+                $state['html'] = false;
+                return false;
+            }
+            elseif ($this->isBlock('ahtml'))
+            {
+                $this->setBlock($key);
+                return false;
+            }
+            elseif (preg_match("/^\s*<!\-\-(.*?)\-\->\s*$/", $line, $matches))
+            {
+=======
             } elseif (!!$state['html'] && strpos($line, "</{$state['html']}>") !== false) {
                 $this->setBlock($key)->endBlock();
                 $state['html'] = false;
@@ -847,6 +1131,7 @@ class Parser
                 $this->setBlock($key);
                 return false;
             } elseif (preg_match("/^\s*<!\-\-(.*?)\-\->\s*$/", $line, $matches)) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $this->startBlock('ahtml', $key)->endBlock();
                 return false;
             }
@@ -863,15 +1148,25 @@ class Parser
      */
     private function parseBlockMath($block, $key, $line)
     {
-        if (preg_match("/^(\s*)\\$\\$(\s*)$/", $line, $matches)) {
-            if ($this->isBlock('math')) {
+        if (preg_match("/^(\s*)\\$\\$(\s*)$/", $line, $matches))
+        {
+            if ($this->isBlock('math'))
+            {
                 $this->setBlock($key)->endBlock();
-            } else {
+            }
+            else
+            {
                 $this->startBlock('math', $key);
             }
 
             return false;
+<<<<<<< HEAD:core/util/Parser.php
+        }
+        elseif ($this->isBlock('math'))
+        {
+=======
         } elseif ($this->isBlock('math')) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             $this->setBlock($key);
             return false;
         }
@@ -888,15 +1183,25 @@ class Parser
      */
     private function parseBlockPre($block, $key, $line, &$state)
     {
-        if (preg_match("/^ {4}/", $line)) {
-            if ($this->isBlock('pre')) {
+        if (preg_match("/^ {4}/", $line))
+        {
+            if ($this->isBlock('pre'))
+            {
                 $this->setBlock($key);
-            } else {
+            }
+            else
+            {
                 $this->startBlock('pre', $key);
             }
 
             return false;
+<<<<<<< HEAD:core/util/Parser.php
+        }
+        elseif ($this->isBlock('pre') && preg_match("/^\s*$/", $line))
+        {
+=======
         } elseif ($this->isBlock('pre') && preg_match("/^\s*$/", $line)) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             $this->setBlock($key);
             return false;
         }
@@ -913,23 +1218,38 @@ class Parser
      */
     private function parseBlockHtml($block, $key, $line, &$state)
     {
-        if (preg_match("/^\s*<({$state['special']})(\s+[^>]*)?>/i", $line, $matches)) {
+        if (preg_match("/^\s*<({$state['special']})(\s+[^>]*)?>/i", $line, $matches))
+        {
             $tag = strtolower($matches[1]);
-            if (!$this->isBlock('html', $tag) && !$this->isBlock('pre')) {
+            if (!$this->isBlock('html', $tag) && !$this->isBlock('pre'))
+            {
                 $this->startBlock('html', $key, $tag);
             }
 
             return false;
+<<<<<<< HEAD:core/util/Parser.php
+        }
+        elseif (preg_match("/<\/({$state['special']})>\s*$/i", $line, $matches))
+        {
+=======
         } elseif (preg_match("/<\/({$state['special']})>\s*$/i", $line, $matches)) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             $tag = strtolower($matches[1]);
 
-            if ($this->isBlock('html', $tag)) {
+            if ($this->isBlock('html', $tag))
+            {
                 $this->setBlock($key)
                     ->endBlock();
             }
 
             return false;
+<<<<<<< HEAD:core/util/Parser.php
+        }
+        elseif ($this->isBlock('html'))
+        {
+=======
         } elseif ($this->isBlock('html')) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             $this->setBlock($key);
             return false;
         }
@@ -945,7 +1265,8 @@ class Parser
      */
     private function parseBlockFootnote($block, $key, $line)
     {
-        if (preg_match("/^\[\^((?:[^\]]|\\]|\\[)+?)\]:/", $line, $matches)) {
+        if (preg_match("/^\[\^((?:[^\]]|\\]|\\[)+?)\]:/", $line, $matches))
+        {
             $space = strlen($matches[0]) - 1;
             $this->startBlock('footnote', $key, array(
                 $space, $matches[1]
@@ -965,7 +1286,8 @@ class Parser
      */
     private function parseBlockDefinition($block, $key, $line)
     {
-        if (preg_match("/^\s*\[((?:[^\]]|\\]|\\[)+?)\]:\s*(.+)$/", $line, $matches)) {
+        if (preg_match("/^\s*\[((?:[^\]]|\\]|\\[)+?)\]:\s*(.+)$/", $line, $matches))
+        {
             $this->_definitions[$matches[1]] = $this->cleanUrl($matches[2]);
             $this->startBlock('definition', $key)
                 ->endBlock();
@@ -984,12 +1306,22 @@ class Parser
      */
     private function parseBlockQuote($block, $key, $line)
     {
-        if (preg_match("/^(\s*)>/", $line, $matches)) {
-            if ($this->isBlock('list') && strlen($matches[1]) > 0) {
+        if (preg_match("/^(\s*)>/", $line, $matches))
+        {
+            if ($this->isBlock('list') && strlen($matches[1]) > 0)
+            {
                 $this->setBlock($key);
+<<<<<<< HEAD:core/util/Parser.php
+            }
+            elseif ($this->isBlock('quote'))
+            {
+=======
             } elseif ($this->isBlock('quote')) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $this->setBlock($key);
-            } else {
+            }
+            else
+            {
                 $this->startBlock('quote', $key);
             }
 
@@ -1009,42 +1341,66 @@ class Parser
      */
     private function parseBlockTable($block, $key, $line, &$state, $lines)
     {
-        if (preg_match("/^((?:(?:(?:\||\+)(?:[ :]*\-+[ :]*)(?:\||\+))|(?:(?:[ :]*\-+[ :]*)(?:\||\+)(?:[ :]*\-+[ :]*))|(?:(?:[ :]*\-+[ :]*)(?:\||\+))|(?:(?:\||\+)(?:[ :]*\-+[ :]*)))+)$/", $line, $matches)) {
-            if ($this->isBlock('table')) {
+        if (preg_match("/^((?:(?:(?:\||\+)(?:[ :]*\-+[ :]*)(?:\||\+))|(?:(?:[ :]*\-+[ :]*)(?:\||\+)(?:[ :]*\-+[ :]*))|(?:(?:[ :]*\-+[ :]*)(?:\||\+))|(?:(?:\||\+)(?:[ :]*\-+[ :]*)))+)$/", $line, $matches))
+        {
+            if ($this->isBlock('table'))
+            {
                 $block[3][0][] = $block[3][2];
                 $block[3][2]++;
                 $this->setBlock($key, $block[3]);
-            } else {
+            }
+            else
+            {
                 $head = 0;
 
-                if (empty($block) ||
+                if (
+                    empty($block) ||
                     $block[0] != 'normal' ||
-                    preg_match("/^\s*$/", $lines[$block[2]])) {
+                    preg_match("/^\s*$/", $lines[$block[2]])
+                )
+                {
                     $this->startBlock('table', $key);
-                } else {
+                }
+                else
+                {
                     $head = 1;
                     $this->backBlock(1, 'table');
                 }
 
-                if ($matches[1][0] == '|') {
+                if ($matches[1][0] == '|')
+                {
                     $matches[1] = substr($matches[1], 1);
 
-                    if ($matches[1][strlen($matches[1]) - 1] == '|') {
+                    if ($matches[1][strlen($matches[1]) - 1] == '|')
+                    {
                         $matches[1] = substr($matches[1], 0, -1);
                     }
                 }
 
                 $rows = preg_split("/(\+|\|)/", $matches[1]);
                 $aligns = array();
-                foreach ($rows as $row) {
+                foreach ($rows as $row)
+                {
                     $align = 'none';
 
-                    if (preg_match("/^\s*(:?)\-+(:?)\s*$/", $row, $matches)) {
-                        if (!empty($matches[1]) && !empty($matches[2])) {
+                    if (preg_match("/^\s*(:?)\-+(:?)\s*$/", $row, $matches))
+                    {
+                        if (!empty($matches[1]) && !empty($matches[2]))
+                        {
                             $align = 'center';
+<<<<<<< HEAD:core/util/Parser.php
+                        }
+                        elseif (!empty($matches[1]))
+                        {
+                            $align = 'left';
+                        }
+                        elseif (!empty($matches[2]))
+                        {
+=======
                         } elseif (!empty($matches[1])) {
                             $align = 'left';
                         } elseif (!empty($matches[2])) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                             $align = 'right';
                         }
                     }
@@ -1069,7 +1425,8 @@ class Parser
      */
     private function parseBlockSh($block, $key, $line)
     {
-        if (preg_match("/^(#+)(.*)$/", $line, $matches)) {
+        if (preg_match("/^(#+)(.*)$/", $line, $matches))
+        {
             $num = min(strlen($matches[1]), 6);
             $this->startBlock('sh', $key, $num)
                 ->endBlock();
@@ -1090,13 +1447,19 @@ class Parser
      */
     private function parseBlockMh($block, $key, $line, &$state, $lines)
     {
-        if (preg_match("/^\s*((=|-){2,})\s*$/", $line, $matches)
-                    && ($block && $block[0] == "normal" && !preg_match("/^\s*$/", $lines[$block[2]]))) {    // check if last line isn't empty
-            if ($this->isBlock('normal')) {
+        if (
+            preg_match("/^\s*((=|-){2,})\s*$/", $line, $matches)
+            && ($block && $block[0] == "normal" && !preg_match("/^\s*$/", $lines[$block[2]]))
+        )
+        {    // check if last line isn't empty
+            if ($this->isBlock('normal'))
+            {
                 $this->backBlock(1, 'mh', $matches[1][0] == '=' ? 1 : 2)
                     ->setBlock($key)
                     ->endBlock();
-            } else {
+            }
+            else
+            {
                 $this->startBlock('normal', $key);
             }
 
@@ -1114,7 +1477,8 @@ class Parser
      */
     private function parseBlockShr($block, $key, $line)
     {
-        if (preg_match("/^(\* *){3,}\s*$/", $line)) {
+        if (preg_match("/^(\* *){3,}\s*$/", $line))
+        {
             $this->startBlock('hr', $key)
                 ->endBlock();
 
@@ -1132,7 +1496,8 @@ class Parser
      */
     private function parseBlockDhr($block, $key, $line)
     {
-        if (preg_match("/^(- *){3,}\s*$/", $line)) {
+        if (preg_match("/^(- *){3,}\s*$/", $line))
+        {
             $this->startBlock('hr', $key)
                 ->endBlock();
 
@@ -1151,30 +1516,60 @@ class Parser
      */
     private function parseBlockDefault($block, $key, $line, &$state)
     {
-        if ($this->isBlock('footnote')) {
+        if ($this->isBlock('footnote'))
+        {
             preg_match("/^(\s*)/", $line, $matches);
-            if (strlen($matches[1]) >= $block[3][0]) {
+            if (strlen($matches[1]) >= $block[3][0])
+            {
                 $this->setBlock($key);
-            } else {
+            }
+            else
+            {
                 $this->startBlock('normal', $key);
             }
+<<<<<<< HEAD:core/util/Parser.php
+        }
+        elseif ($this->isBlock('table'))
+        {
+            if (false !== strpos($line, '|'))
+            {
+                $block[3][2]++;
+=======
         } elseif ($this->isBlock('table')) {
             if (false !== strpos($line, '|')) {
                 $block[3][2] ++;
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $this->setBlock($key, $block[3]);
-            } else {
+            }
+            else
+            {
                 $this->startBlock('normal', $key);
             }
+<<<<<<< HEAD:core/util/Parser.php
+        }
+        elseif ($this->isBlock('quote'))
+        {
+            if (!preg_match("/^(\s*)$/", $line))
+            { // empty line
+=======
         } elseif ($this->isBlock('quote')) {
             if (!preg_match("/^(\s*)$/", $line)) { // empty line
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $this->setBlock($key);
-            } else {
+            }
+            else
+            {
                 $this->startBlock('normal', $key);
             }
-        } else {
-            if (empty($block) || $block[0] != 'normal') {
+        }
+        else
+        {
+            if (empty($block) || $block[0] != 'normal')
+            {
                 $this->startBlock('normal', $key);
-            } else {
+            }
+            else
+            {
                 $this->setBlock($key);
             }
         }
@@ -1192,7 +1587,8 @@ class Parser
         $blocks = $this->call('beforeOptimizeBlocks', $blocks, $lines);
 
         $key = 0;
-        while (isset($blocks[$key])) {
+        while (isset($blocks[$key]))
+        {
             $moved = false;
 
             $block = &$blocks[$key];
@@ -1201,29 +1597,47 @@ class Parser
 
             list($type, $from, $to) = $block;
 
-            if ('pre' == $type) {
+            if ('pre' == $type)
+            {
                 $isEmpty = array_reduce(
                     array_slice($lines, $block[1], $block[2] - $block[1] + 1),
-                    function ($result, $line) {
+                    function ($result, $line)
+                    {
                         return preg_match("/^\s*$/", $line) && $result;
                     },
                     true
                 );
 
-                if ($isEmpty) {
+                if ($isEmpty)
+                {
                     $block[0] = $type = 'normal';
                 }
             }
 
-            if ('normal' == $type) {
+            if ('normal' == $type)
+            {
                 // combine two blocks
                 $types = array('list', 'quote');
 
+<<<<<<< HEAD:core/util/Parser.php
+                if (
+                    $from == $to && preg_match("/^\s*$/", $lines[$from])
+                    && !empty($prevBlock) && !empty($nextBlock)
+                )
+                {
+                    if (
+                        $prevBlock[0] == $nextBlock[0] && in_array($prevBlock[0], $types)
+                        && ($prevBlock[0] != 'list'
+                            || ($prevBlock[3][0] == $nextBlock[3][0] && $prevBlock[3][1] == $nextBlock[3][1]))
+                    )
+                    {
+=======
                 if ($from == $to && preg_match("/^\s*$/", $lines[$from])
                     && !empty($prevBlock) && !empty($nextBlock)) {
                     if ($prevBlock[0] == $nextBlock[0] && in_array($prevBlock[0], $types)
                         && ($prevBlock[0] != 'list'
                             || ($prevBlock[3][0] == $nextBlock[3][0] && $prevBlock[3][1] == $nextBlock[3][1]))) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                         // combine 3 blocks
                         $blocks[$key - 1] = array(
                             $prevBlock[0],  $prevBlock[1],  $nextBlock[2], $prevBlock[3] ?? null
@@ -1236,8 +1650,9 @@ class Parser
                 }
             }
 
-            if (!$moved) {
-                $key ++;
+            if (!$moved)
+            {
+                $key++;
             }
         }
 
@@ -1258,11 +1673,19 @@ class Parser
         $lang = trim($lang);
         $count = strlen($blank);
 
-        if (!preg_match("/^[_a-z0-9-\+\#\:\.]+$/i", $lang)) {
+        if (!preg_match("/^[_a-z0-9-\+\#\:\.]+$/i", $lang))
+        {
             $lang = NULL;
-        } else {
+        }
+        else
+        {
             $parts = explode(':', $lang);
+<<<<<<< HEAD:core/util/Parser.php
+            if (count($parts) > 1)
+            {
+=======
             if (count($parts) > 1) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 list($lang, $rel) = $parts;
                 $lang = trim($lang);
                 $rel = trim($rel);
@@ -1271,9 +1694,11 @@ class Parser
 
         $isEmpty = true;
 
-        $lines = array_map(function ($line) use ($count, &$isEmpty) {
+        $lines = array_map(function ($line) use ($count, &$isEmpty)
+        {
             $line = preg_replace("/^[ ]{{$count}}/", '', $line);
-            if ($isEmpty && !preg_match("/^\s*$/", $line)) {
+            if ($isEmpty && !preg_match("/^\s*$/", $line))
+            {
                 $isEmpty = false;
             }
 
@@ -1297,7 +1722,8 @@ class Parser
      */
     private function parsePre(array $lines, $value, $start)
     {
-        foreach ($lines as &$line) {
+        foreach ($lines as &$line)
+        {
             $line = htmlspecialchars(substr($line, 4));
         }
 
@@ -1384,7 +1810,8 @@ class Parser
      */
     private function parseQuote(array $lines, $value, $start)
     {
-        foreach ($lines as &$line) {
+        foreach ($lines as &$line)
+        {
             $line = preg_replace("/^\s*> ?/", '', $line);
         }
         $str = implode("\n", $lines);
@@ -1408,24 +1835,48 @@ class Parser
         $suffix = '';
         $last = 0;
 
+<<<<<<< HEAD:core/util/Parser.php
+        foreach ($lines as $key => $line)
+        {
+            if (preg_match("/^(\s{" . $space . "})((?:[0-9]+\.?)|\-|\+|\*)(\s+)(.*)$/i", $line, $matches))
+            {
+                if ($type == 'ol' && $key == 0)
+                {
+                    $start = intval($matches[2]);
+
+                    if ($start != 1)
+                    {
+=======
         foreach ($lines as $key => $line) {
             if (preg_match("/^(\s{" . $space . "})((?:[0-9]+\.?)|\-|\+|\*)(\s+)(.*)$/i", $line, $matches)) {
                 if ($type == 'ol' && $key == 0) {
                     $start = intval($matches[2]);
 
                     if ($start != 1) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                         $suffix = ' start="' . $start . '"';
                     }
                 }
 
                 $rows[] = [$matches[4]];
                 $last = count($rows) - 1;
+<<<<<<< HEAD:core/util/Parser.php
+            }
+            else
+            {
+=======
             } else {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $rows[$last][] = preg_replace("/^\s{" . ($tab + $space) . "}/", '', $line);
             }
         }
 
+<<<<<<< HEAD:core/util/Parser.php
+        foreach ($rows as $row)
+        {
+=======
         foreach ($rows as $row) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             $html .= "<li>" . $this->parse(implode("\n", $row), true, $start) . "</li>";
             $start += count($row);
         }
@@ -1448,9 +1899,12 @@ class Parser
         $body = $head ? NULL : true;
         $output = false;
 
-        foreach ($lines as $key => $line) {
-            if (in_array($key, $ignores)) {
-                if ($head && $output) {
+        foreach ($lines as $key => $line)
+        {
+            if (in_array($key, $ignores))
+            {
+                if ($head && $output)
+                {
                     $head = false;
                     $body = true;
                 }
@@ -1461,58 +1915,90 @@ class Parser
             $line = trim($line);
             $output = true;
 
-            if ($line[0] == '|') {
+            if ($line[0] == '|')
+            {
                 $line = substr($line, 1);
 
-                if ($line[strlen($line) - 1] == '|') {
+                if ($line[strlen($line) - 1] == '|')
+                {
                     $line = substr($line, 0, -1);
                 }
             }
 
 
-            $rows = array_map(function ($row) {
-                if (preg_match("/^\s*$/", $row)) {
+            $rows = array_map(function ($row)
+            {
+                if (preg_match("/^\s*$/", $row))
+                {
                     return ' ';
-                } else {
+                }
+                else
+                {
                     return trim($row);
                 }
             }, explode('|', $line));
             $columns = array();
             $last = -1;
 
-            foreach ($rows as $row) {
-                if (strlen($row) > 0) {
-                    $last ++;
+            foreach ($rows as $row)
+            {
+                if (strlen($row) > 0)
+                {
+                    $last++;
                     $columns[$last] = array(
                         isset($columns[$last]) ? $columns[$last][0] + 1 : 1,  $row
                     );
+<<<<<<< HEAD:core/util/Parser.php
+                }
+                elseif (isset($columns[$last]))
+                {
+                    $columns[$last][0]++;
+                }
+                else
+                {
+=======
                 } elseif (isset($columns[$last])) {
                     $columns[$last][0] ++;
                 } else {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                     $columns[0] = array(1, $row);
                 }
             }
 
-            if ($head) {
+            if ($head)
+            {
                 $html .= '<thead>';
+<<<<<<< HEAD:core/util/Parser.php
+            }
+            elseif ($body)
+            {
+=======
             } elseif ($body) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $html .= '<tbody>';
             }
 
             $html .= '<tr' . ($this->_line ? ' class="line" data-start="'
-                    . ($start + $key) . '" data-end="' . ($start + $key)
-                    . '" data-id="' . $this->_uniqid . '"' : '') . '>';
+                . ($start + $key) . '" data-end="' . ($start + $key)
+                . '" data-id="' . $this->_uniqid . '"' : '') . '>';
 
+<<<<<<< HEAD:core/util/Parser.php
+            foreach ($columns as $key => $column)
+            {
+=======
             foreach ($columns as $key => $column) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 list($num, $text) = $column;
                 $tag = $head ? 'th' : 'td';
 
                 $html .= "<{$tag}";
-                if ($num > 1) {
+                if ($num > 1)
+                {
                     $html .= " colspan=\"{$num}\"";
                 }
 
-                if (isset($aligns[$key]) && $aligns[$key] != 'none') {
+                if (isset($aligns[$key]) && $aligns[$key] != 'none')
+                {
                     $html .= " align=\"{$aligns[$key]}\"";
                 }
 
@@ -1521,14 +2007,22 @@ class Parser
 
             $html .= '</tr>';
 
-            if ($head) {
+            if ($head)
+            {
                 $html .= '</thead>';
+<<<<<<< HEAD:core/util/Parser.php
+            }
+            elseif ($body)
+            {
+=======
             } elseif ($body) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $body = false;
             }
         }
 
-        if ($body !== NULL) {
+        if ($body !== NULL)
+        {
             $html .= '</tbody>';
         }
 
@@ -1559,16 +2053,23 @@ class Parser
      */
     private function parseNormal(array $lines, $inline, $start)
     {
-        foreach ($lines as $key => &$line) {
+        foreach ($lines as $key => &$line)
+        {
             $line = $this->parseInline($line);
 
-            if (!preg_match("/^\s*$/", $line)) {
+            if (!preg_match("/^\s*$/", $line))
+            {
                 $line = $this->markLine($start + $key) . $line;
             }
         }
 
         $str = trim(implode("\n", $lines));
+<<<<<<< HEAD:core/util/Parser.php
+        $str = preg_replace_callback("/(\n\s*){2,}/", function () use (&$inline)
+        {
+=======
         $str = preg_replace_callback("/(\n\s*){2,}/", function () use (&$inline) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             $inline = false;
             return "</p><p>";
         }, $str);
@@ -1589,7 +2090,8 @@ class Parser
         list($space, $note) = $value;
         $index = array_search($note, $this->_footnotes);
 
-        if (false !== $index) {
+        if (false !== $index)
+        {
             $lines[0] = preg_replace("/^\[\^((?:[^\]]|\\]|\\[)+?)\]:/", '', $lines[0]);
             $this->_footnotes[$index] = $lines;
         }
@@ -1617,9 +2119,12 @@ class Parser
      */
     private function parseHtml(array $lines, $type, $start)
     {
-        foreach ($lines as &$line) {
-            $line = $this->parseInline($line,
-                isset($this->_specialWhiteList[$type]) ? $this->_specialWhiteList[$type] : '');
+        foreach ($lines as &$line)
+        {
+            $line = $this->parseInline(
+                $line,
+                isset($this->_specialWhiteList[$type]) ? $this->_specialWhiteList[$type] : ''
+            );
         }
 
         return implode("\n", $this->markLines($lines, $start));
@@ -1636,10 +2141,19 @@ class Parser
         $title = null;
         $url = trim($url);
 
+<<<<<<< HEAD:core/util/Parser.php
+        if ($parseTitle)
+        {
+            $pos = strpos($url, ' ');
+
+            if ($pos !== false)
+            {
+=======
         if ($parseTitle) {
             $pos = strpos($url, ' ');
 
             if ($pos !== false) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $title = htmlspecialchars(trim(substr($url, $pos + 1), ' "\''));
                 $url = substr($url, 0, $pos);
             }
@@ -1647,13 +2161,25 @@ class Parser
 
         $url = preg_replace("/[\"'<>\s]/", '', $url);
 
+<<<<<<< HEAD:core/util/Parser.php
+        if (preg_match("/^(mailto:)?[_a-z0-9-\.\+]+@[_\w-]+(?:\.[a-z]{2,})+$/i", $url, $matches))
+        {
+            if (empty($matches[1]))
+            {
+=======
         if (preg_match("/^(mailto:)?[_a-z0-9-\.\+]+@[_\w-]+(?:\.[a-z]{2,})+$/i", $url, $matches)) {
             if (empty($matches[1])) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
                 $url = 'mailto:' . $url;
             }
         }
 
+<<<<<<< HEAD:core/util/Parser.php
+        if (preg_match("/^\w+:/i", $url) && !preg_match("/^(https?|mailto):/i", $url))
+        {
+=======
         if (preg_match("/^\w+:/i", $url) && !preg_match("/^(https?|mailto):/i", $url)) {
+>>>>>>> 01ef2da0417be206de7167d263d3dcfbfe7c574a:lib/Parser/Parser.php
             return '#';
         }
 
@@ -1667,7 +2193,9 @@ class Parser
     private function escapeBracket($str)
     {
         return str_replace(
-            array('\[', '\]', '\(', '\)'),  array('[', ']', '(', ')'),  $str
+            array('\[', '\]', '\(', '\)'),
+            array('[', ']', '(', ')'),
+            $str
         );
     }
 
@@ -1681,7 +2209,7 @@ class Parser
      */
     private function startBlock($type, $start, $value = NULL)
     {
-        $this->_pos ++;
+        $this->_pos++;
         $this->_current = $type;
 
         $this->_blocks[$this->_pos] = array($type, $start, $start, $value);
@@ -1732,11 +2260,13 @@ class Parser
      */
     private function setBlock($to = NULL, $value = NULL)
     {
-        if (NULL !== $to) {
+        if (NULL !== $to)
+        {
             $this->_blocks[$this->_pos][2] = $to;
         }
 
-        if (NULL !== $value) {
+        if (NULL !== $value)
+        {
             $this->_blocks[$this->_pos][3] = $value;
         }
 
@@ -1753,15 +2283,17 @@ class Parser
      */
     private function backBlock($step, $type, $value = NULL)
     {
-        if ($this->_pos < 0) {
+        if ($this->_pos < 0)
+        {
             return $this->startBlock($type, 0, $value);
         }
 
         $last = $this->_blocks[$this->_pos][2];
         $this->_blocks[$this->_pos][2] = $last - $step;
 
-        if ($this->_blocks[$this->_pos][1] <= $this->_blocks[$this->_pos][2]) {
-            $this->_pos ++;
+        if ($this->_blocks[$this->_pos][1] <= $this->_blocks[$this->_pos][2])
+        {
+            $this->_pos++;
         }
 
         $this->_current = $type;
@@ -1777,7 +2309,8 @@ class Parser
      */
     private function combineBlock()
     {
-        if ($this->_pos < 1) {
+        if ($this->_pos < 1)
+        {
             return $this;
         }
 
@@ -1788,7 +2321,7 @@ class Parser
         $this->_blocks[$this->_pos - 1] = $prev;
         $this->_current = $prev[0];
         unset($this->_blocks[$this->_pos]);
-        $this->_pos --;
+        $this->_pos--;
 
         return $this;
     }
