@@ -1,18 +1,20 @@
 <?php
 
-include_once 'core/data/Meta.php';
-include_once 'core/logic/MetaDB.php';
-include_once 'core/logic/UserDB.php';
-include_once 'core/util/Response.php';
-include_once 'core/util/AuthUser.php';
-include_once 'core/util/Function.php';
+include_once 'include/meta.php';
+include_once 'include/util/Response.php';
+include_once 'include/util/AuthUser.php';
+include_once 'include/util/Function.php';
 
-$config = 'db/config.json';
+$config = 'dconfig.json';
 $static = 'static/';
 
-switch (keyNN($_GET))
-{
+switch (keyNN($_GET)) {
+		/**
+	 * A single page program.
+	 * including search, comments, tags and more.
+	 */
 	case '':
+	case 'index':
 		require $static . 'index.html';
 		break;
 
@@ -20,31 +22,27 @@ switch (keyNN($_GET))
 		require $static . 'admin.html';
 		break;
 
+		/**
+		 * Viewer of metas like file, article.
+		 */
 	case 'meta':
 		require $static . 'meta.html';
 		break;
 
 	case 'api':
 		header('Access-Control-Allow-Origin:*');
-		switch (keyNN($_GET))
-		{
+		switch (keyNN($_GET)) {
 			case 'v1':
-				switch (keyNN($_GET))
-				{
+				switch (keyNN($_GET)) {
 					case 'user':
-						switch (keyNN($_GET))
-						{
-							case 'login':
-								{
+						switch (keyNN($_GET)) {
+							case 'login': {
 									$user = new AuthUser($a = null, $u = $_POST['uid'], $p = $_POST['password']);
-									if ($user->auth() == true)
-									{
+									if ($user->auth() == true) {
 										echo (new Response(200, $data = array(
 											'apikey' => $user->udb->getUser($uid = $_POST['uid'])
 										)))->get();
-									}
-									else
-									{
+									} else {
 										echo (new Response(403, 'login failed'))->get();
 									}
 								}
@@ -60,15 +58,11 @@ switch (keyNN($_GET))
 						break;
 
 					case 'meta':
-						switch (keyNN($_GET))
-						{
+						switch (keyNN($_GET)) {
 							case 'get_meta':
-								if ($id = $_POST['id'] == null)
-								{
+								if ($id = $_POST['id'] == null) {
 									$data = (new MetaDB)->getList();
-								}
-								else
-								{
+								} else {
 									$data = (new MetaDB)->getMeta($id);
 								}
 								echo (new Response(200, $data))->get();
@@ -76,8 +70,7 @@ switch (keyNN($_GET))
 
 							case 'create_meta':
 								$postData['meta'] = new Meta($_POST['time'], $_POST['type'], explode(',', $_POST['tag']), $_POST['uid']);
-								switch ($_POST['type'])
-								{
+								switch ($_POST['type']) {
 									case 'text':
 										$postData['meta'] = new Text($postData['meta'], $_POST['title'], $_POST['content']);
 										break;
@@ -101,8 +94,7 @@ switch (keyNN($_GET))
 						break;
 
 					case 'config':
-						switch (keyNN($_GET))
-						{
+						switch (keyNN($_GET)) {
 							case 'update':
 								break;
 
