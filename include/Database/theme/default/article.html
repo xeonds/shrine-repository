@@ -1,0 +1,22 @@
+<div id="main">
+    <div class="topic markdown">
+        <h1 style="text-align:center;">{title}</h1>
+        <h4 style="text-align:center;">{lang:author}：{author} | {date}</h4>
+        <br />{content}
+    </div>
+</div>
+<template>
+<div id="comment" class='topic comments'>
+    <div style='display:flex;flex-flow:row;align-items:center;justify-content:space-between;'>
+        <h2>{lang:comment}</h2>
+        <button onClick="toggle('send-comment')" style='margin-right:1rem;'>{lang:send_comment}</button>
+    </div>
+    <template>
+        <div class="comment">
+            <div class="comment-id">{comment_id}</div>
+            <div class="comment-time">{comment_time}</div>
+            <div class="comment-context">{comment_context}</div>
+        </div>
+    </template>
+</div>
+</template>

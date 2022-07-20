@@ -1,0 +1,21 @@
+<div id="login" class="container float-window">
+    <div class="d-flex flex-column align-items-center">
+        <div>
+            <div class="d-flex flex-row justify-content-between">
+                <div>
+                    <h2>{lang:login}</h2>
+                </div>
+                <div>
+                    <button onClick="toggle('login')" class="btn btn-danger">{lang:close}</button>
+                </div>
+            </div>
+            <form method="post" action="index.php?option=login">
+                <div class="form-group">
+                    <label for="password">{lang:enter_pwd}</label>
+                    <input type="password" name="password" class="form-control" id="password">
+                </div>
+                <button class="btn btn-danger" name="login">{lang:login}</button>
+            </form>
+        </div>
+    </div>
+</div>

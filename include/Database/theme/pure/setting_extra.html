@@ -1,0 +1,23 @@
+<div id="main">
+    <div class="d-flex flex-column align-items-center">
+        <div id="setting" class="main-content">
+            <h2>{lang:extra_setting}</h2>
+            <h3>{lang:backup}</h3>
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="alert('{lang:backing_up}');window.location.href='index.php?option=backup&backup=article';">{lang:backup_article}</button>&nbsp;
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="alert('{lang:backing_up}');window.location.href='index.php?option=backup&backup=file';">{lang:backup_file}</button>&nbsp;
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="alert('{lang:backing_up}');window.location.href='index.php?option=backup&backup=msg';">{lang:backup_msg}</button>&nbsp;
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="alert('{lang:backing_up}');window.location.href='index.php?option=backup&backup=setting';">{lang:backup_setting}</button>
+            <h3>{lang:recover}</h3>
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="toggle('recover')">{lang:recover_article}</button>&nbsp;
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="toggle('recover')">{lang:recover_msg}</button>&nbsp;
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="toggle('recover')">{lang:recover_setting}</button>
+
+            <h3>{lang:fixup}</h3>
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="window.location.href='index.php?option=article_repair'">{lang:article_format_fix}</button>&nbsp;
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="window.location.href='index.php?option=link_repair'">{lang:repo_link_repair}</button>
+
+            <h3>{lang:publish_book}</h3>
+            <button style="margin-top:0.4rem;" class="btn btn-danger" onClick="alert('{lang:publishing}');window.location.href='index.php?option=create_book';">{lang:confirm_publish_book}</button>
+        </div>
+    </div>
+</div>

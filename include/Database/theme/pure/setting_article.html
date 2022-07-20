@@ -1,0 +1,107 @@
+<div id="main">
+    <div class="d-flex flex-column align-items-center">
+        <div id="setting" class="main-content">
+            <div class="d-flex flex-row align-items-center justify-content-between">
+                <h2>{lang:article_management}</h2>
+                <button onClick='toggle("editor")' class="btn btn-danger">{lang:new_article}</button>
+            </div>
+            <h3>{lang:released_article}</h3>
+            <template>
+                <template>
+                    <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <td>{lang:title}</td>
+                                <td>{lang:size}</td>
+                                <td>{lang:create_time}</td>
+                                <td>{lang:action}</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template>
+                                <tr>
+                                    <td><a href="{article_path}" download="" target="_blank">{article_title}</a></td>
+                                    <td>{article_size}</td>
+                                    <td>{article_date}</td>
+                                    <td>
+                                        <button class="btn btn-danger" onClick="toggle_editor('{count}')">{lang:edit}</button>
+                                        <button class="btn btn-danger" onClick="window.location.href='index.php?option=switch_article_stat&path={article_path}'">{lang:released_article}</button>
+                                        <button class="btn btn-danger" id="confirm-{count}" onClick="confirm('{count}')">{lang:delete}</button>
+                                        <button class="btn btn-danger" id="yes-{count}" onClick="window.location.href='index.php?option=delete_article&article={article_url}&delete=1'" style="display:none;">{lang:confirm}</button>
+                                        <button class="btn btn-danger" id="no-{count}" onClick="confirm('{count}')" style="display:none;">{lang:cancel}</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="edit-article" id="editor-{count}" style="display:none;">
+                                            <form action="index.php?option=edit_article" method="post">
+                                                <h5>{lang:edit_article}:{article_title}</h5>
+                                                <div class="form-group">
+                                                    <label>{lang:comment_content}</label>
+                                                    <textarea class="form-control" name="text" rows="5">{article_text}</textarea>
+                                                </div>
+                                                <input type="hidden" name="path" value="{article_path}" />
+                                                <button class="btn btn-danger" type="submit">{lang:confirm_edit}</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    </div>
+                </template>
+                <template><h5>空</h5></template>
+            </template>
+            <hr />
+            <h3>{lang:unreleased_article}</h3>
+            <template>
+                <template>
+                    <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <td>{lang:title}</td>
+                            <td>{lang:size}</td>
+                            <td>{lang:create_time}</td>
+                            <td>{lang:action}</td>
+                        </thead>
+                        <tbody>
+                            <template>
+                                <tr>
+                                    <td><a href="{article_path}" download="" target="_blank">{article_title}</a></td>
+                                    <td>{article_size}</td>
+                                    <td>{article_date}</td>
+                                    <td>
+                                        <button class="btn btn-danger" onClick="toggle_editor('{count}')">{lang:edit}</button>
+                                        <button class="btn btn-danger" onClick="window.location.href='index.php?option=switch_article_stat&path={article_path}'">{lang:unreleased_article}</button>
+                                        <button class="btn btn-danger" id="confirm-{count}" onClick="confirm('{count}')">{lang:delete}</button>
+                                        <button class="btn btn-danger" id="yes-{count}" onClick="window.location.href='index.php?option=delete_article&article={article_url}&delete=1'" style="display:none;">{lang:confirm}</button>
+                                        <button class="btn btn-danger" id="no-{count}" onClick="confirm('{count}')" style="display:none;">{lang:cancel}</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="edit-article" id="editor-{count}" style="display:none;">
+                                            <form action="index.php?option=edit_article" method="post">
+                                                <h5>{lang:edit_article}:{article_title}</h5>
+                                                <div class="form-group">
+                                                    <label>{lang:comment_content}</label>
+                                                    <textarea class="form-control" name="text" rows="5">{article_text}</textarea>
+                                                </div>
+                                                <input type="hidden" name="path" value="{article_path}" />
+                                                <button class="btn btn-danger" type="submit">{lang:confirm_edit}</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    </div>
+                </template>
+                <template><h5>空</h5></template>
+            </template>
+        </div>
+    </div>
+</div>
