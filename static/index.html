@@ -38,7 +38,7 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="pill" href="#tag">Tag</a>
                 </li>
-                <li class="nav-item" v-for="tag in config.ui.nav.split(',')">
+                <li class="nav-item" v-for="tag in config.ui.nav">
                     <a class="nav-link" data-toggle="pill" v-bind:href="'#'+tag.split('&').join('_')">{{tag}}</a>
                 </li>
             </ul>
@@ -51,9 +51,8 @@
                             data-target="#createMeta">New</button>
                     </div><br>
                     <div class="d-flex flex-row flex-wrap">
-                        <meta-box v-for="meta in meta.list" :key="meta.id" :meta="meta"
-                            :expand-len="isInclude(meta.tag,config.display.tag.expand)?config.display.preview.more:config.display.preview.less"
-                            :class="{'w-100':isInclude(meta.tag,config.display.tag.expand)}" @meta-clicked="viewMeta" />
+                        <meta-box v-for="meta in meta.metalist" :key="meta.id" :meta="meta" :expand-len="32"
+                            @meta-clicked="viewMeta" />
                     </div>
                 </div>
                 <div class="tab-pane" id="tag" style="width:100%;max-width:768px;">
@@ -61,20 +60,19 @@
                     <div class="d-flex flex-row flex-wrap">
                         <div v-for="tag in meta.taglist">
                             <h5> <span class="text-primary">#</span>{{tag}} </h5>
-                            <!-- <div class="d-flex flex-row flex-wrap" v-if="visible[tag]">
-                                <meta-box v-for="meta in metaList" :key="meta.id" :meta="meta" v-if="isInclude(meta.tag,tag.split())" :expand-len="config.display.preview.less" />
-                            </div> -->
+                            <div class="d-flex flex-row flex-wrap">
+                                <!-- <meta-box v-for="meta in meta.metalist" :key="meta.id" :meta="meta"
+                                    v-if="isInclude(meta.tag,tag.split())" :expand-len="16" /> -->
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="tab-pane" v-bind:id="tag.split('&').join('_')" style="width:100%;max-width:768px;"
-                    v-for="tag in config.ui.nav.split(',')">
+                    v-for="tag in config.ui.nav">
                     <h4><span class="text-primary">#</span>{{tag}}</h4><br>
                     <div class="d-flex flex-row flex-wrap">
-                        <meta-box v-for="meta in meta.list" :key="meta.id" :meta="meta"
-                            v-if="isInclude(meta.tag,tag.split())"
-                            :class="{'w-100':isInclude(meta.tag,config.display.tag.expand)}"
-                            :expand-len="isInclude(meta.tag,config.display.tag.expand)?config.display.preview.more:config.display.preview.less" />
+                        <meta-box v-for="meta in meta.metalist" :key="meta.id" :meta="meta"
+                            v-if="isInclude(meta.tag,tag.split())" :expand-len="32" />
                     </div>
                 </div>
             </div>
@@ -113,17 +111,15 @@
                         <h4 class="modal-title">Login</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <form action="core.php?api&v1&user&login" method="post">
-                        <div class="modal-body">
-                            <label>Username</label>
-                            <input type="text" name="uid" class="form-control">
-                            <label>Password</label>
-                            <input type="text" name="password" class="form-control">
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Login</button>
-                        </div>
-                    </form>
+                    <div class="modal-body">
+                        <label>Username</label>
+                        <input type="text" name="uid" class="form-control" v-bind="user.username">
+                        <label>Password</label>
+                        <input type="password" name="password" class="form-control" v-bind="user.password">
+                    </div>
+                    <div class="modal-footer">
+                        <button @click="login" class="btn btn-primary">Login</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -177,13 +173,14 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title">{{meta.title}}</h4>
+                        <h4 class="modal-title">{{meta.view.title}}</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="modal-body" id="view-meta"></div>
+                    <div class="modal-body" id="view-meta" v-if="meta.view.type=='text'" v-html="meta.view.content">
+                    </div>
                     <div class="modal-footer">
-                        <p><span>{{meta.type}}</span><span class="text-primary"> · </span><span
-                                v-for="tag in meta.tag"><span class="text-primary">#</span>{{tag}}&nbsp;</span>
+                        <p><span>{{meta.view.type}}</span><span class="text-primary"> · </span><span
+                                v-for="tag in meta.view.tag"><span class="text-primary">#</span>{{tag}}&nbsp;</span>
                         </p>
                     </div>
                 </div>
@@ -205,8 +202,8 @@
                 return {
                     'meta': '', 'expandLen': 32
                 }
-            }
-            ,
+            },
+            props: ['meta', 'expandLen'],
             template: `<div class="metaBox" data-toggle="modal" data-target="#viewMeta" @click="$emit('meta-clicked',meta)">
                             <template v-if="meta.type=='text'">
                                 <h4>{{meta.title}}</h4>
@@ -223,10 +220,16 @@
         var vm = new Vue({
             el: '#app ',
             data: {
-                'user': {},
+                'user': {
+                    'userid': '',
+                    'username': '',
+                    'password': '',
+                    'apikey': ''
+                },
                 'meta': {
                     'metalist': [],
-                    'taglist': []
+                    'taglist': [],
+                    'view': []
                 },
                 'config': {
                     "ui": {
@@ -253,35 +256,31 @@
                         }
                     }
                 },
-                'visible': [],
                 'upload': {}
             },
             created: async function () {
-                var config = await this.getApi('config&get')
-                that.config = config
-                this.meta.metalist = await this.getApi('meta&get_meta', this.getTagList)
+                var baseURL = 'core.php?api&v1&'
+                var tmp = ''
+                that = this
+
+                tmp = await axios.get(baseURL + 'config&get')
+                that.config = tmp.data.data
+                tmp = await axios.get(baseURL + 'meta&get_meta')
+                that.meta.metalist = tmp.data.data
+                that.getTagList()
             },
             methods: {
-                getApi: async function (url, fun = null) {
-                    var res = await axios.get('core.php?api&v1&' + url)
-                    if (res.status == 200) {
-                        return res.data.data;
-                    }
-                },
                 getTimestamp: function () {
                     return new Date().getTime()
                 },
                 getTagList: function () {
                     that = this;
-                    that.meta.list.forEach(element => {
+                    that.meta.metalist.forEach(element => {
                         element.tag.forEach(e => {
                             that.meta.taglist.push(e)
                         })
                     })
                     that.meta.taglist = Array.from(new Set(that.meta.taglist))
-                    that.meta.taglist.forEach(element => {
-                        that.visible[element] = true
-                    })
                 },
                 isInclude: function (a, b) {
                     var result = true
@@ -293,12 +292,25 @@
                 },
                 viewMeta: function (meta) {
                     that = this
-                    that.meta = meta
-                    document.getElementById("view-meta").innerHTML = marked(meta.content)
-                    hljs.highlightAll();
+
+                    that.meta.view = Object.assign({}, meta);
+                    if (that.meta.view.type == 'text') {
+                        that.meta.view.content = marked(that.meta.view.content)
+                    }
                 },
                 onSwitchMetaBox: function (id) {
 
+                },
+                login: async function () {
+                    that = this
+                    var data = new FormData()
+                    data.append('uid', that.user.username)
+                    data.append('password', that.user.password)
+                    var res = await axios.post("core.php?api&v1&user&login", data)
+                    if (res.data.code == 200) {
+                        that.user = res.data.data
+                        console.log('login success')
+                    }
                 }
             }
         });

@@ -4,7 +4,7 @@ class Config {
     private $default = array(
         'ui' => array(
             'title' => '',
-            'nav' => '',
+            'nav' => [],
             'sub_title' => '',
             'footer' => '',
             'page' => array(

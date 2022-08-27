@@ -1,7 +1,11 @@
 {
     "ui": {
         "title": "神社的储物间",
-        "nav": "article, note, file",
+        "nav": [
+            "article",
+            "note",
+            "file"
+        ],
         "sub_title": "“我节操放哪去了？”",
         "footer": "夢想天生",
         "page": {
