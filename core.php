@@ -1,11 +1,12 @@
 <?php
 
-include_once 'include/meta.php';
-include_once 'include/util/Response.php';
-include_once 'include/util/AuthUser.php';
-include_once 'include/util/Function.php';
+require_once 'include/meta.php';
+require_once 'include/config.php';
+require_once 'include/util/Response.php';
+require_once 'include/util/AuthUser.php';
+require_once 'include/util/Function.php';
 
-$config = 'dconfig.json';
+$config = 'config.json';
 $static = 'static/';
 
 switch (keyNN($_GET)) {
@@ -36,23 +37,21 @@ switch (keyNN($_GET)) {
 				switch (keyNN($_GET)) {
 					case 'user':
 						switch (keyNN($_GET)) {
-							case 'login': {
-									$user = new AuthUser($a = null, $u = $_POST['uid'], $p = $_POST['password']);
-									if ($user->auth() == true) {
-										echo (new Response(200, $data = array(
-											'apikey' => $user->udb->getUser($uid = $_POST['uid'])
-										)))->get();
-									} else {
-										echo (new Response(403, 'login failed'))->get();
-									}
+							case 'login':
+								$user = new AuthUser($a = null, $u = $_POST['uid'], $p = $_POST['password']);
+								if ($user->auth() == true) {
+									echo Response::gen(200, 'success', $user->info);
+								} else {
+									echo Response::gen(403, 'login failed');
 								}
 								break;
 
 							case 'register':
-								if (false != $uid = (new UserDB)->createUser($_POST['username'], $_POST['password']))
-									echo (new Response(200, (new UserDB)->getUser($uid = $uid)))->get();
-								else
-									echo (new Response(400, 'Create user failed', false))->get();
+								if (false != $uid = (new UserDB)->createUser($_POST['username'], $_POST['password'])) {
+									echo Response::gen(200, 'success', (new UserDB)->getUser($uid = $uid));
+								} else {
+									echo Response::gen(400, 'Create user failed');
+								}
 								break;
 						}
 						break;
@@ -60,12 +59,12 @@ switch (keyNN($_GET)) {
 					case 'meta':
 						switch (keyNN($_GET)) {
 							case 'get_meta':
-								if ($id = $_POST['id'] == null) {
+								if (!isset($_POST['id'])) {
 									$data = (new MetaDB)->getList();
 								} else {
 									$data = (new MetaDB)->getMeta($id);
 								}
-								echo (new Response(200, $data))->get();
+								echo Response::gen(200, 'success', $data);
 								break;
 
 							case 'create_meta':
@@ -86,9 +85,15 @@ switch (keyNN($_GET)) {
 										break;
 								}
 								if ((new MetaDB)->createMeta($postData))
-									echo (new Response(200, $postData['meta']->get()))->get();
+									echo Response::gen(200, 'success', $postData['meta']->get());
 								else
-									echo (new Response(400, 'Create meta failed', $isSuccess = false))->get();
+									echo Response::gen(400, 'Create meta failed');
+								break;
+
+							case 'search_meta':
+								/**
+								 * TODO: search meta
+								 */
 								break;
 						}
 						break;
@@ -96,14 +101,12 @@ switch (keyNN($_GET)) {
 					case 'config':
 						switch (keyNN($_GET)) {
 							case 'update':
+								(new Config)->save($_POST['config']);
+								echo Response::gen(200, 'success');
 								break;
 
 							case 'get':
-								echo (new Response(200, json_decode(file_get_contents($config), true)))->get();
-								break;
-
-							default:
-								echo (new Response(404, 'no such api', false))->get();
+								echo Response::gen(200, 'success', (new Config)->get());
 								break;
 						}
 						break;

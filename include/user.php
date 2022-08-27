@@ -35,7 +35,7 @@ class UserDB {
     public function createUser(string $uname, string $pwd): int {
         try {
             for ($uid = 1; isset($this->db[$uid]); $uid++);
-            $this->db[$uid] = (new User($uid, $uname, $pwd, (new AuthCode(2, 'md5'))->getCode()))->get();
+            $this->db[$uid] = (new User($uid, $uname, $pwd, AuthCode::gen_auth_code(2, 'md5')))->get();
             $this->saveDB();
             return $uid;
         } catch (Exception $e) {
@@ -56,17 +56,24 @@ class UserDB {
         }
     }
 
-    public function getUser(int $uid = 0, string $apikey = '') {
-        if ($uid > 0) {
-            return $this->db[$uid] != null ? $this->db[$uid] : false;
-        } else {
-            foreach ($this->db as $user) {
-                if ($user['apikey'] == $apikey) {
-                    return $user != null ? $user : false;
+    public function getUser(mixed $uid = null, string $apikey = '') {
+        if ($uid != null) {
+            if (is_int($uid)) {
+                return isset($this->db[$uid]) ? $this->db[$uid] : false;
+            } else if (is_string($uid)) {
+                foreach ($this->db as $user) {
+                    if ($user['username'] == $uid) {
+                        return $user;
+                    }
                 }
             }
-            return false;
         }
+        foreach ($this->db as $user) {
+            if ($user['apikey'] == $apikey) {
+                return $user != null ? $user : false;
+            }
+        }
+        return false;
     }
 
     public function modifyUser(int $uid, array $data): bool {
