@@ -2,33 +2,24 @@
 
 /**
  * Response - quickly struct a json-format response
- * @method __construct($status, $data = null, $errCode = null, $isSuccess = true)
- * @param $status status code of response, like 200, 404, etc.
- * @param $data response data if isSuccess is true
- * @param $errCode error code if isSuccess is false
- * @param $isSuccess default is true
+ * @method __construct($code, $data = null, $errCode = null, $msg = true)
+ * @param $code status code of response, like 200, 404, etc.
+ * @param $data response data if msg is true
+ * @param $errCode error code if msg is false
+ * @param $msg default is true
  */
-class Response
-{
-    private $status, $isSuccess, $data;
+class Response {
     /**
      * Construct function. returns parsed json data.
-     * @param $status status code of response, like 200, 404, etc.
-     * @param $data response data, also as errCode
-     * @param $isSuccess default is true
+     * @param $code status code of response, like 200, 404, etc.
+     * @param $msg default is true
+     * @param $data response data
      */
-    public function __construct(int $status, $data = null, bool $isSuccess = true)
-    {
-        $this->status = $status;
-        $this->data = $data;
-        $this->isSuccess = $isSuccess;
-    }
-
-    public function get()
-    {
+    public static function gen(int $code, string $msg, $data = null) {
         return json_encode(array(
-            "status" => $this->status,
-            $this->isSuccess ? "data" : "errCode" => $this->data
+            "code" => $code,
+            "msg" => $msg,
+            "data" => $data
         ));
     }
 }
