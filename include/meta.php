@@ -500,7 +500,7 @@ class MetaArray extends Meta {
  * @method modifyMeta($id, $data) This $data is same as the one createMeta() needs.
  */
 class MetaDB {
-    private $dbPath = "db/meta/";
+    private $dbPath = "post/meta/";
 
     public function createMeta(array $data, string $id = ''): bool {
         try {
