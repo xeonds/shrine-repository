@@ -1,8 +1,11 @@
 <?php
 
+require_once 'include/util/Function.php';
+
 /**
  * Old controller from previous version of shrine-repository.
  */
+
 if (isset($_GET["page"]) || !isset($_GET["option"])) {
     $page = $_GET["page"];
     $param = $param->page($_GET["page"]);
@@ -358,5 +361,27 @@ if (isset($_GET["page"]) || !isset($_GET["option"])) {
                 header("refresh:0;url='index.php'");
             }
             break;
+    }
+}
+
+/**
+ * New router
+ * 
+ * It need a router map. The map contains router path and related handler.
+ * Handler are function needles or anonymous functions.
+ */
+class Router {
+    private $map;
+
+    public function __construct(mixed $map) {
+        $this->map = $map;
+    }
+
+    /**
+     * TODO: handler
+     */
+    public function handle($url = $_GET) {
+        foreach ($url as $key => $var) {
+        }
     }
 }
