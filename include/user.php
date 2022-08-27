@@ -26,14 +26,25 @@ class User {
  */
 
 class UserDB {
-    private $dbPath = 'db/userDB.json', $db;
+    private $dbPath = 'user.json', $db;
 
     public function __construct() {
+        if (!is_file($this->dbPath)) {
+            file_put_contents($this->dbPath, '{}', LOCK_EX);
+        }
         $this->db = json_decode(file_get_contents($this->dbPath), true);
     }
 
     public function createUser(string $uname, string $pwd): int {
         try {
+            //promise unique username
+            foreach ($this->db as $key => $user) {
+                if ($uname == $user['username']) {
+                    throw new Exception("User name already in use");
+                    return false;
+                }
+            }
+            //promise userid available
             for ($uid = 1; isset($this->db[$uid]); $uid++);
             $this->db[$uid] = (new User($uid, $uname, $pwd, AuthCode::gen_auth_code(2, 'md5')))->get();
             $this->saveDB();

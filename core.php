@@ -38,8 +38,8 @@ switch (keyNN($_GET)) {
 					case 'user':
 						switch (keyNN($_GET)) {
 							case 'login':
-								$user = new AuthUser($a = null, $u = $_POST['uid'], $p = $_POST['password']);
-								if ($user->auth() == true) {
+								$user = new AuthUser(u: $_POST['uid'], p: $_POST['password']);
+								if ($user->auth()) {
 									echo Response::gen(200, 'success', $user->info);
 								} else {
 									echo Response::gen(403, 'login failed');

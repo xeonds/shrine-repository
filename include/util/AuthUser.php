@@ -5,7 +5,7 @@ class AuthUser {
     private $uid, $apiKey, $password, $udb;
     public $info;
 
-    public function __construct($a = null, $u = '', $p = '') {
+    public function __construct($a = null, string $u = '', string $p = '') {
         $this->udb = new UserDB;
         if ($a != null) {
             $this->apiKey = $a;
@@ -36,7 +36,7 @@ class AuthUser {
     private function authByPassword() {
         $result = false;
 
-        if (($this->info = $this->udb->getUser($this->uid, ''))->password == $this->password) {
+        if (($this->info = $this->udb->getUser($this->uid, ''))['password'] == $this->password) {
             $result = true;
         }
 
