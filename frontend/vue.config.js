@@ -4,6 +4,7 @@ module.exports = defineConfig({
   publicPath: "",
   devServer: {
     open: true,
+    host: "localhost",
     port: "6431",
   },
   outputDir: "../static/",

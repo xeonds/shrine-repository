@@ -19,87 +19,13 @@
         </h3>
       </div>
       <!-- Nav tabs -->
-      <ul class="nav nav-pills justify-content-center" style="padding: 1rem">
-        <li class="nav-item">
-          <a class="nav-link active" data-toggle="pill" href="#home">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" data-toggle="pill" href="#tag">Tag</a>
-        </li>
-        <li :key="tag" class="nav-item" v-for="tag in config.ui.nav">
-          <a
-            class="nav-link"
-            data-toggle="pill"
-            v-bind:href="'#' + tag.split('&').join('_')"
-            >{{ tag }}</a
-          >
-        </li>
-      </ul>
+
       <div
         id="main"
         class="d-flex flex-column align-items-center tab-content"
         style="padding: 2rem; min-height: 60vh"
       >
-        <div
-          class="tab-pane active"
-          id="home"
-          style="width: 100%; max-width: 768px"
-        >
-          <div
-            class="d-flex flex-row align-items-center justify-content-between"
-          >
-            <h4>Home</h4>
-            <button
-              href="#"
-              class="btn btn-primary"
-              data-toggle="modal"
-              data-target="#createMeta"
-            >
-              New
-            </button>
-          </div>
-          <br />
-          <div class="d-flex flex-row flex-wrap">
-            <meta-box
-              v-for="meta in meta.metalist"
-              :key="meta.id"
-              :meta="meta"
-              :expand-len="32"
-              @meta-clicked="viewMeta"
-            />
-          </div>
-        </div>
-        <div class="tab-pane" id="tag" style="width: 100%; max-width: 768px">
-          <h4>Tag</h4>
-          <br />
-          <div class="d-flex flex-row flex-wrap">
-            <div :key="tag" v-for="tag in meta.taglist">
-              <h5><span class="text-primary">#</span>{{ tag }}</h5>
-              <div class="d-flex flex-row flex-wrap">
-                <!-- <meta-box v-for="meta in meta.metalist" :key="meta.id" :meta="meta"
-                                    v-if="isInclude(meta.tag,tag.split())" :expand-len="16" /> -->
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          :key="tag"
-          class="tab-pane"
-          v-bind:id="tag.split('&').join('_')"
-          style="width: 100%; max-width: 768px"
-          v-for="tag in config.ui.nav"
-        >
-          <h4><span class="text-primary">#</span>{{ tag }}</h4>
-          <br />
-          <div class="d-flex flex-row flex-wrap">
-            <meta-box
-              v-for="meta in meta.metalist"
-              :key="meta.id"
-              :meta="meta"
-              :expand-len="32"
-            />
-          </div>
-        </div>
+        <router-view></router-view>
       </div>
       <div
         id="footer"
@@ -283,7 +209,6 @@
 </template>
 
 <script>
-import MetaBox from "./components/MetaBox.vue";
 import axios from "axios";
 import marked from "marked";
 
@@ -291,9 +216,7 @@ axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
 
 export default {
   name: "App",
-  components: {
-    MetaBox,
-  },
+  components: {},
   data: function () {
     return {
       user: {
