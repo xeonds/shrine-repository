@@ -1,0 +1,29 @@
+{
+    "ui": {
+        "title": "神社的储物间",
+        "nav": [
+            "article",
+            "note",
+            "file"
+        ],
+        "sub_title": "“我节操放哪去了？”",
+        "footer": "夢想天生",
+        "page": {
+            "comment_board": true,
+            "tags": true,
+            "archive": true
+        },
+        "login_entrance": true,
+        "open_link_in_new_tab": true
+    },
+    "meta": {
+        "comment_meta": true,
+        "file_detail": true,
+        "size_control": {
+            "full": "",
+            "wide": "article",
+            "medium": "file",
+            "small": "note"
+        }
+    }
+}
