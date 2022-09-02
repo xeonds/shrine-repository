@@ -59,10 +59,10 @@ switch (keyNN($_GET)) {
 					case 'meta':
 						switch (keyNN($_GET)) {
 							case 'get_meta':
-								if (!isset($_POST['id'])) {
-									$data = (new MetaDB)->getList();
+								if (isset($_POST['id'])) {
+									$data = (new MetaDB)->getMeta($_POST['id']);
 								} else {
-									$data = (new MetaDB)->getMeta($id);
+									$data = (new MetaDB)->getList();
 								}
 								echo Response::gen(200, 'success', $data);
 								break;
