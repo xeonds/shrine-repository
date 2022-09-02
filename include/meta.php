@@ -9,9 +9,10 @@ include_once('include/util/AuthCode.php');
  * @param int $uid Creator of this meta
  */
 class Meta {
-    private $time, $type, $tag, $uid;
+    private $id, $time, $type, $tag, $uid;
 
     public function __construct(string $Time, string $Type, array $Tag, int $Uid) {
+        $this->id = (new AuthCode(0))->getCode();
         $this->time = $Time;
         $this->type = $Type;
         $this->tag = $Tag;
@@ -19,7 +20,7 @@ class Meta {
     }
 
     public function get() {
-        return array('time' => $this->time, 'type' => $this->type, 'tag' => $this->tag, 'uid' => $this->uid);
+        return array('id' => $this->id, 'time' => $this->time, 'type' => $this->type, 'tag' => $this->tag, 'uid' => $this->uid);
     }
 }
 
@@ -502,10 +503,9 @@ class MetaArray extends Meta {
 class MetaDB {
     private $dbPath = "post/meta/";
 
-    public function createMeta(array $data, string $id = ''): bool {
+    public function createMeta(array $data): bool {
         try {
-            $id = $id == '' ? (new AuthCode(0))->getCode() : $id;
-            mkdir($metaPath = $this->dbPath . $id . '/');
+            mkdir($metaPath = $this->dbPath . $data['meta']->get()['id'] . '/');
             switch ($data['meta']->get()['type']) {
                 case 'text':
                     break;
@@ -525,9 +525,9 @@ class MetaDB {
         }
     }
 
-    public function deleteMeta(string $meta): bool {
+    public function deleteMeta(string $meta_id): bool {
         try {
-            while (false !== $item = readdir(opendir($metaPath = $this->dbPath . $meta . '/')))
+            while (false !== $item = readdir(opendir($metaPath = $this->dbPath . $meta_id . '/')))
                 if ($item != '.' && $item != '..')
                     unlink($metaPath . $item);
             return true;
@@ -549,10 +549,10 @@ class MetaDB {
         return $data;
     }
 
-    public function getMeta($id, $format = 'array') {
+    public function getMeta($id) {
         $metaData = file_get_contents($this->dbPath . $id . '/meta.json');
 
-        return $format == 'array' ? json_decode($metaData, true) : $metaData;
+        return json_decode($metaData, true);
     }
 
     public function modifyMeta(string $id, array $data): bool {
