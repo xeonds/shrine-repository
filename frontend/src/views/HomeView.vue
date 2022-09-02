@@ -17,6 +17,10 @@
           {{ config.ui.title }}<span class="text-primary">|</span
           ><span class="text-secondary">{{ config.ui.sub_title }}</span>
         </h3>
+        <p>
+          <router-link to="/register">Register</router-link> ·
+          <router-link to="/login">Login</router-link>
+        </p>
       </div>
       <!-- Nav tabs -->
 
@@ -63,65 +67,7 @@
         "
         style="padding: 2rem"
       >
-        <p>
-          <a href="#" data-toggle="modal" data-target="#register">Register</a> |
-          <a href="#" data-toggle="modal" data-target="#login">Login</a>
-        </p>
         <p>&copy; 2021 <span class="text-primary">|</span> xeonds</p>
-      </div>
-    </div>
-    <div class="modal fade" id="register">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Register</h4>
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
-          </div>
-          <form action="core.php?api&v1&user&register" method="post">
-            <div class="modal-body">
-              <label>Username</label>
-              <input type="text" name="username" class="form-control" />
-              <label>Password</label>
-              <input type="text" name="password" class="form-control" />
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Register</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="modal fade" id="login">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Login</h4>
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
-          </div>
-          <div class="modal-body">
-            <label>Username</label>
-            <input
-              type="text"
-              name="uid"
-              class="form-control"
-              v-bind="user.username"
-            />
-            <label>Password</label>
-            <input
-              type="password"
-              name="password"
-              class="form-control"
-              v-bind="user.password"
-            />
-          </div>
-          <div class="modal-footer">
-            <button @click="login" class="btn btn-primary">Login</button>
-          </div>
-        </div>
       </div>
     </div>
     <div class="modal fade" id="createMeta">
@@ -134,7 +80,7 @@
             </button>
           </div>
           <form
-            action="core.php?api&v1&meta&create_meta"
+            action="index.php?api&v1&meta&create_meta"
             method="post"
             enctype="multipart/form-data"
           >
@@ -203,33 +149,6 @@
         </div>
       </div>
     </div>
-    <div class="modal fade" id="viewMeta">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">{{ meta.view.title }}</h4>
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
-          </div>
-          <div
-            class="modal-body"
-            id="view-meta"
-            v-if="meta.view.type == 'text'"
-            v-html="meta.view.content"
-          ></div>
-          <div class="modal-footer">
-            <p>
-              <span>{{ meta.view.type }}</span
-              ><span class="text-primary"> · </span
-              ><span :key="tag" v-for="tag in meta.view.tag"
-                ><span class="text-primary">#</span>{{ tag }}&nbsp;</span
-              >
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -282,7 +201,7 @@ export default {
     };
   },
   created: async function () {
-    var baseURL = "core.php?api&v1&";
+    var baseURL = "index.php?api&v1&";
     var tmp = "";
     var that = this;
 
@@ -318,7 +237,7 @@ export default {
       var data = new FormData();
       data.append("uid", that.user.username);
       data.append("password", that.user.password);
-      var res = await axios.post("core.php?api&v1&user&login", data);
+      var res = await axios.post("index.php?api&v1&user&login", data);
       if (res.data.code == 200) {
         that.user = res.data.data;
         console.log("login success");

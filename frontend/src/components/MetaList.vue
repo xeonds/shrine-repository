@@ -41,13 +41,19 @@ export default {
     };
   },
   created: async function () {
-    var baseURL = "core.php?api&v1&";
+    var baseURL = "index.php?api&v1&";
     var tmp = [];
     var that = this;
 
     tmp = await axios.get(baseURL + "meta&get_meta");
     that.metalist = tmp.data.data;
     that.metaFilter();
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.metaFilter();
+      }
+    );
   },
   async beforeRouteUpdate() {
     this.metaFilter();
@@ -63,14 +69,6 @@ export default {
         }
       });
       that.metalist = tmp;
-    },
-    viewMeta: function (meta) {
-      var that = this;
-
-      that.meta.view = Object.assign({}, meta);
-      if (that.meta.view.type == "text") {
-        // that.meta.view.content = marked(that.meta.view.content);
-      }
     },
   },
 };

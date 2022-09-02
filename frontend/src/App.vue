@@ -53,7 +53,7 @@ export default {
     };
   },
   created: async function () {
-    var baseURL = "core.php?api&v1&";
+    var baseURL = "index.php?api&v1&";
     var tmp = "";
     var that = this;
 
@@ -97,7 +97,7 @@ export default {
       var data = new FormData();
       data.append("uid", that.user.username);
       data.append("password", that.user.password);
-      var res = await axios.post("core.php?api&v1&user&login", data);
+      var res = await axios.post("index.php?api&v1&user&login", data);
       if (res.data.code == 200) {
         that.user = res.data.data;
         console.log("login success");

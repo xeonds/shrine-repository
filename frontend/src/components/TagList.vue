@@ -27,7 +27,7 @@ export default {
     };
   },
   created: async function () {
-    var baseURL = "core.php?api&v1&";
+    var baseURL = "index.php?api&v1&";
     var tmp = [];
     var that = this;
 
