@@ -48,9 +48,17 @@ switch (keyNN($_GET)) {
 
 							case 'register':
 								if (false != $uid = (new UserDB)->createUser($_POST['username'], $_POST['password'])) {
-									echo Response::gen(200, 'success', (new UserDB)->getUser($uid = $uid));
+									echo Response::gen(200, 'success', (new UserDB)->getUser(uid: $uid));
 								} else {
 									echo Response::gen(400, 'Create user failed');
+								}
+								break;
+
+							case 'get_user':
+								if (false != $user_data = (new UserDB)->getUser(uid: $_POST['uid'])) {
+									echo Response::gen(200, 'success', $user_data);
+								} else {
+									echo Response::gen(404, 'user id not found');
 								}
 								break;
 						}
