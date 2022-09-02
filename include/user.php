@@ -69,7 +69,7 @@ class UserDB {
 
     public function getUser(mixed $uid = null, string $apikey = '') {
         if ($uid != null) {
-            if (is_int($uid)) {
+            if (is_numeric($uid)) {
                 return isset($this->db[$uid]) ? $this->db[$uid] : false;
             } else if (is_string($uid)) {
                 foreach ($this->db as $user) {
