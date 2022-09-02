@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>{{ meta_id }}</h1>
+    <h1>{{ meta.title }}</h1>
+    <div v-html="meta.html"></div>
   </div>
 </template>
 
@@ -9,22 +10,25 @@
 
 <script>
 import axios from "axios";
+import { marked } from "marked";
+
+axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
 
 export default {
   name: "MetaView",
   data: function () {
     return {
-      meta_id: "",
-      meta: [],
+      meta_id: this.$route.params.meta_id,
+      meta: { time: "", type: "", tag: "", html: "" },
     };
   },
   created: async function () {
     let data = new FormData();
-    let meta = [];
 
     data.append("id", this.$route.params.meta_id);
-    meta = await axios.post("meta&get_meta", data);
-    this.meta = meta;
+    var meta = await axios.post("core.php?api&v1&meta&get_meta", data);
+    this.meta = meta.data.data;
+    this.meta.html = marked(this.meta.content);
   },
 };
 </script>

@@ -235,7 +235,6 @@
 
 <script>
 import axios from "axios";
-import marked from "marked";
 
 axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
 
@@ -312,14 +311,6 @@ export default {
         if (a.includes(element) == false) result = false;
       });
       return result;
-    },
-    viewMeta: function (meta) {
-      var that = this;
-
-      that.meta.view = Object.assign({}, meta);
-      if (that.meta.view.type == "text") {
-        that.meta.view.content = marked(that.meta.view.content);
-      }
     },
     onSwitchMetaBox: function () {},
     login: async function () {
