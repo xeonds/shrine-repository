@@ -56,7 +56,7 @@ switch (keyNN($_GET)) {
 
 							case 'get_user':
 								if (false != $user_data = (new UserDB)->getUser(uid: $_POST['uid'])) {
-									echo Response::gen(200, 'success', $user_data);
+									echo Response::gen(200, 'success', array('userid' => $user_data['uid'], 'username' => $user_data['username']));
 								} else {
 									echo Response::gen(404, 'user id not found');
 								}
