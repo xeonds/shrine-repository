@@ -7,12 +7,9 @@ class AuthUser {
 
     public function __construct($a = null, string $u = '', string $p = '') {
         $this->udb = new UserDB;
-        if ($a != null) {
-            $this->apiKey = $a;
-        } else {
-            $this->uid = $u;
-            $this->password = $p;
-        }
+        $this->apiKey = $a;
+        $this->uid = $u;
+        $this->password = $p;
     }
 
     public function auth() {
@@ -25,8 +22,7 @@ class AuthUser {
     private function authByApikey() {
         $result = false;
 
-        if ($this->info = $this->udb->getUser(0, $this->apiKey) != false) {
-
+        if (($this->info = $this->udb->getUser(apikey: $this->apiKey)) != false) {
             $result = true;
         }
 
@@ -36,7 +32,7 @@ class AuthUser {
     private function authByPassword() {
         $result = false;
 
-        if (($this->info = $this->udb->getUser($this->uid, ''))['password'] == $this->password) {
+        if (($this->info = $this->udb->getUser(uid: $this->uid))['password'] == $this->password) {
             $result = true;
         }
 

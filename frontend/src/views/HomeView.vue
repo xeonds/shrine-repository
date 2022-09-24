@@ -14,12 +14,17 @@
         style="padding: 2rem"
       >
         <h3>
-          {{ config.ui.title }}<span class="text-primary">|</span
-          ><span class="text-secondary">{{ config.ui.sub_title }}</span>
+          Site Title
+          <!-- {{ /*config.ui.title*/ }}<span class="text-primary">|</span
+          ><span class="text-secondary">{{ config.ui.sub_title }}</span> -->
         </h3>
-        <p>
+        <p v-if="user.status == 0">
           <router-link to="/register">Register</router-link> ·
           <router-link to="/login">Login</router-link>
+        </p>
+        <p v-else>
+          <router-link :to="'/user/' + user.userid">User Center</router-link> ·
+          <a href="#" @click="logout">Logout</a>
         </p>
       </div>
       <!-- Nav tabs -->
@@ -166,6 +171,7 @@ export default {
         username: "",
         password: "",
         apikey: "",
+        status: 0,
       },
       meta: {
         metalist: [],
@@ -210,6 +216,7 @@ export default {
     tmp = await axios.get(baseURL + "meta&get_meta");
     that.meta.metalist = tmp.data.data;
     that.getTagList();
+    that.loadUserInfo();
   },
   methods: {
     getTimestamp: function () {
@@ -231,17 +238,26 @@ export default {
       });
       return result;
     },
-    onSwitchMetaBox: function () {},
-    login: async function () {
-      var that = this;
-      var data = new FormData();
-      data.append("uid", that.user.username);
-      data.append("password", that.user.password);
-      var res = await axios.post("index.php?api&v1&user&login", data);
-      if (res.data.code == 200) {
-        that.user = res.data.data;
-        console.log("login success");
-      }
+    loadUserInfo: function () {
+      let userInfo = localStorage.getItem("userInfo");
+      let that = this;
+
+      if (null === userInfo) return;
+      ({
+        userid: that.user.userid,
+        username: that.user.username,
+        pasword: that.user.password,
+        apikey: that.user.apikey,
+      } = JSON.parse(userInfo));
+      that.user.status = 1;
+      console.log(that.user);
+    },
+    logout: function () {
+      let that = this;
+
+      that.user.status = 0;
+      localStorage.clear();
+      alert("logout success");
     },
   },
 };

@@ -70,7 +70,9 @@ export default {
       var res = await axios.post("index.php?api&v1&user&login", data);
       if (res.data.code == 200) {
         alert(res.data.msg);
-        window.location.href = "#/home";
+        localStorage.setItem("userInfo", JSON.stringify(res.data.data));
+        console.log(res.data);
+        // window.location.href = "#/home";
       }
     },
   },

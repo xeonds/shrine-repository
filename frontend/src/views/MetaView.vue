@@ -14,11 +14,11 @@
     >
       <h1>{{ meta.title }}</h1>
       <p class="text-secondary">
-        <span class="text-primary">|</span> {{ Date(meta.time) }} ·
+        <date-filter :timestamp="meta.time"></date-filter> ·
         {{ meta.author }}
       </p>
       <p class="text-secondary">
-        <span class="text-primary">|</span> {{ meta.type }}
+        <span class="text-primary"><b>|</b></span> {{ meta.type }}
         <span class="text-primary"> · </span
         ><span :key="tag" v-for="tag in meta.tag"
           ><span class="text-primary">#</span>{{ tag }}&nbsp;</span
@@ -27,9 +27,27 @@
     </div>
     <div
       id="main"
-      class="d-flex flex-column align-items-center justify-content-center"
+      class="d-flex flex-row align-items-begin justify-content-center"
     >
+      <div id="left">
+        <div id="index"></div>
+        <div id="detail"></div>
+      </div>
       <div id="content" v-html="meta.html" v-highlight></div>
+      <div id="comments">#Comments</div>
+    </div>
+    <div
+      id="footer"
+      class="
+        d-flex
+        flex-column
+        align-items-center
+        justify-content-center
+        bg-light
+      "
+      style="padding: 2rem"
+    >
+      <p>&copy; 2021 <span class="text-primary">|</span> xeonds</p>
     </div>
   </div>
 </template>
@@ -37,20 +55,34 @@
 <style scoped>
 #content {
   padding: 2rem;
-  min-height: 60vh;
+  min-height: 80vh;
   width: 80%;
   max-width: 800px;
+}
+
+#index {
+  width: 16rem;
+}
+
+#detail {
+  width: 16rem;
+}
+
+#comments {
+  width: 16rem;
 }
 </style>
 
 <script>
 import axios from "axios";
 import { marked } from "marked";
+import DateFilter from "../components/DateFilter.vue";
 
 axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
 
 export default {
   name: "MetaView",
+  components: { "date-filter": DateFilter },
   data: function () {
     return {
       meta_id: this.$route.params.meta_id,
