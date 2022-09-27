@@ -1,5 +1,6 @@
 import "./plugins/bootstrap-vue";
-import "./plugins/axios";
+import axios from "./plugins/axios";
+import VueAxios from "vue-axios";
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -15,4 +16,6 @@ app.directive("highlight", function (el) {
   });
 });
 
+app.use(VueAxios, axios);
+app.provide("axios", app.config.globalProperties.axios);
 app.use(router).mount("#app");

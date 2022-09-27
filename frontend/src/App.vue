@@ -6,8 +6,6 @@
 import axios from "axios";
 import marked from "marked";
 
-axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
-
 export default {
   name: "App",
   components: {},

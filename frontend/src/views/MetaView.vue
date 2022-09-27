@@ -78,8 +78,6 @@ import axios from "axios";
 import { marked } from "marked";
 import DateFilter from "../components/DateFilter.vue";
 
-axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
-
 export default {
   name: "MetaView",
   components: { "date-filter": DateFilter },

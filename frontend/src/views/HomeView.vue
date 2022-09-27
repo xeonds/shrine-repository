@@ -14,9 +14,8 @@
         style="padding: 2rem"
       >
         <h3>
-          Site Title
-          <!-- {{ /*config.ui.title*/ }}<span class="text-primary">|</span
-          ><span class="text-secondary">{{ config.ui.sub_title }}</span> -->
+          {{ config.ui.title }}<span class="text-primary">|</span
+          ><span class="text-secondary">{{ config.ui.sub_title }}</span>
         </h3>
         <p v-if="user.status == 0">
           <router-link to="/register">Register</router-link> ·
@@ -72,7 +71,9 @@
         "
         style="padding: 2rem"
       >
-        <p>&copy; 2021 <span class="text-primary">|</span> xeonds</p>
+        <p>
+          &copy; 2021 <span class="text-primary">|</span> {{ config.ui.footer }}
+        </p>
       </div>
     </div>
     <div class="modal fade" id="createMeta">
@@ -159,8 +160,6 @@
 
 <script>
 import axios from "axios";
-
-axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
 
 export default {
   name: "HomeView",

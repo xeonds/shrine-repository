@@ -25,14 +25,14 @@
             type="text"
             name="username"
             class="form-control"
-            v-bind="user.username"
+            v-model="user.username"
           />
           <label>Password</label>
           <input
             type="text"
             name="password"
             class="form-control"
-            v-bind="user.password"
+            v-model="user.password"
           />
         </div>
         <div class="modal-footer">
@@ -48,8 +48,6 @@
 
 <script>
 import axios from "axios";
-
-axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
 
 export default {
   name: "RegisterView",

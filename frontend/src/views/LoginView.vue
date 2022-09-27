@@ -49,8 +49,6 @@
 <script>
 import axios from "axios";
 
-//
-
 export default {
   name: "LoginView",
   data: function () {
@@ -65,7 +63,6 @@ export default {
     login: async function () {
       let data = new FormData();
       let that = this;
-      console.log(that.user);
 
       data.append("uid", that.user.username);
       data.append("password", that.user.password);
@@ -73,8 +70,7 @@ export default {
       if (res.data.code == 200) {
         alert(res.data.msg);
         localStorage.setItem("userInfo", JSON.stringify(res.data.data));
-        console.log(res.data);
-        // window.location.href = "#/home";
+        window.location.href = "#/home";
       }
     },
   },

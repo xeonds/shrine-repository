@@ -16,8 +16,6 @@
 <script>
 import axios from "axios";
 
-axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
-
 export default {
   name: "HomeView",
   data: function () {

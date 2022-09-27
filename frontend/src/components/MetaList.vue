@@ -30,8 +30,6 @@
 import axios from "axios";
 import MetaBox from "./MetaBox.vue";
 
-axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
-
 export default {
   name: "HomeView",
   components: { "meta-box": MetaBox },
