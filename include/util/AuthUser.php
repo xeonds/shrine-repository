@@ -5,7 +5,7 @@ class AuthUser {
     private $uid, $apiKey, $password, $udb;
     public $info;
 
-    public function __construct($a = null, string $u = '', string $p = '') {
+    public function __construct(mixed $a = null, string $u = '', string $p = '') {
         $this->udb = new UserDB;
         $this->apiKey = $a;
         $this->uid = $u;

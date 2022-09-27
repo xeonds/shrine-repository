@@ -25,14 +25,14 @@
             type="text"
             name="uid"
             class="form-control"
-            v-bind="user.username"
+            v-model="user.username"
           />
           <label>Password</label>
           <input
             type="password"
             name="password"
             class="form-control"
-            v-bind="user.password"
+            v-model="user.password"
           />
         </div>
         <div class="modal-footer">
@@ -49,7 +49,7 @@
 <script>
 import axios from "axios";
 
-axios.defaults.baseURL = "http://www.jiujiuer.xyz/pages/repo-tr/";
+//
 
 export default {
   name: "LoginView",
@@ -64,9 +64,11 @@ export default {
   methods: {
     login: async function () {
       let data = new FormData();
+      let that = this;
+      console.log(that.user);
 
-      data.append("uid", this.user.username);
-      data.append("password", this.user.password);
+      data.append("uid", that.user.username);
+      data.append("password", that.user.password);
       var res = await axios.post("index.php?api&v1&user&login", data);
       if (res.data.code == 200) {
         alert(res.data.msg);
