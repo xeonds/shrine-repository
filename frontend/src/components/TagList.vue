@@ -17,7 +17,7 @@
 import axios from "axios";
 
 export default {
-  name: "HomeView",
+  name: "TagList",
   data: function () {
     return {
       metalist: [],

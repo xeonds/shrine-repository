@@ -39,7 +39,7 @@
             style="padding: 1rem"
           >
             <li class="nav-item">
-              <router-link class="nav-link" data-toggle="pill" to="/home"
+              <router-link class="nav-link" data-toggle="pill" to="/"
                 >Home</router-link
               >
             </li>
