@@ -7,31 +7,36 @@ import UserView from "../views/UserView.vue";
 import MetaList from "../components/MetaList.vue";
 import TagList from "../components/TagList.vue";
 import OverView from "../components/OverView.vue";
+import DataAnalysis from "../components/DataAnalysis.vue";
 
 const routes = [
-  { path: "/", redirect: "/home/overview" },
   {
-    path: "/home",
+    path: "/",
     component: HomeView,
     children: [
       {
-        path: "overview",
-        conponent: OverView,
+        path: "",
+        component: OverView,
       },
-      {
-        path: "tags",
-        component: TagList,
-      },
+      { path: "tag/all", component: TagList },
       {
         path: "tag/:id",
         component: MetaList,
       },
+      {
+        path: ":user_id",
+        component: UserView,
+      },
+      {
+        path: "user",
+        component: UserView,
+        children: [{ path: "analysis", component: DataAnalysis }],
+      },
+      { path: "meta/:meta_id", component: MetaView },
     ],
   },
-  { path: "/meta/:meta_id", component: MetaView },
-  { path: "/register", component: RegisterView },
-  { path: "/login", component: LoginView },
-  { path: "/user/:user_id", component: UserView },
+  { path: "/user/register", component: RegisterView },
+  { path: "/user/login", component: LoginView },
 ];
 
 const router = createRouter({

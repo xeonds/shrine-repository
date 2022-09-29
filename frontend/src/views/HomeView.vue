@@ -18,8 +18,8 @@
           ><span class="text-secondary">{{ config.ui.sub_title }}</span>
         </h3>
         <p v-if="user.status == 0">
-          <router-link to="/register">Register</router-link> ·
-          <router-link to="/login">Login</router-link>
+          <router-link to="/user/register">Register</router-link> ·
+          <router-link to="/user/login">Login</router-link>
         </p>
         <p v-else>
           <router-link :to="'/user/' + user.userid">User Center</router-link> ·
@@ -44,7 +44,7 @@
               >
             </li>
             <li class="nav-item">
-              <router-link class="nav-link" data-toggle="pill" to="/home/tags"
+              <router-link class="nav-link" data-toggle="pill" to="/tag/all"
                 >Tag</router-link
               >
             </li>
@@ -52,7 +52,7 @@
               <router-link
                 class="nav-link"
                 data-toggle="pill"
-                :to="'/home/tag/' + tag"
+                :to="'/tag/' + tag"
                 >{{ tag }}</router-link
               >
             </li>

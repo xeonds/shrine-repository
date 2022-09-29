@@ -1,14 +1,25 @@
 <template>
-  <div>OverView</div>
+  <div
+    id="main"
+    class="d-flex flex-column align-items-begin justify-content-center"
+  >
+    <h4>OverView</h4>
+    <div>
+      <h5>Recent Meta</h5>
+      <meta-list></meta-list>
+    </div>
+  </div>
 </template>
 
 <style scoped>
 </style>
 
 <script>
+import MetaList from "./MetaList.vue";
+
 export default {
   name: "OverView",
-  components: {},
+  components: { "meta-list": MetaList },
   data: function () {
     return {};
   },
@@ -22,10 +33,6 @@ export default {
     // that.meta.metalist = tmp.data.data;
     // that.getTagList();
   },
-  methods: {
-    getTimestamp: function () {
-      return new Date().getTime();
-    },
-  },
+  methods: {},
 };
 </script>
