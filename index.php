@@ -31,7 +31,8 @@ switch (keyNN($_GET)) {
 		break;
 
 	case 'api':
-		header('Access-Control-Allow-Origin:*');
+		// header('Access-Control-Allow-Origin:http://localhost:6431');		//develop setting
+		// header('Access-Control-Allow-Credentials:true');		//develop setting
 		switch (keyNN($_GET)) {
 			case 'v1':
 				switch (keyNN($_GET)) {
@@ -62,8 +63,8 @@ switch (keyNN($_GET)) {
 								}
 								break;
 						}
-						break;
 
+						break;
 					case 'meta':
 						switch (keyNN($_GET)) {
 							case 'get_meta':
