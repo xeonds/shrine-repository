@@ -2,9 +2,19 @@
   <router-view></router-view>
 </template>
 
+<style>
+body {
+  background-image: url("assets/hero-bg.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+}
+</style>
+
 <script>
 import axios from "axios";
-import marked from "marked";
 
 export default {
   name: "App",
@@ -62,9 +72,6 @@ export default {
     that.getTagList();
   },
   methods: {
-    getTimestamp: function () {
-      return new Date().getTime();
-    },
     getTagList: function () {
       var that = this;
       that.meta.metalist.forEach((element) => {
@@ -74,47 +81,9 @@ export default {
       });
       that.meta.taglist = Array.from(new Set(that.meta.taglist));
     },
-    isInclude: function (a, b) {
-      var result = true;
-      b.forEach((element) => {
-        if (a.includes(element) == false) result = false;
-      });
-      return result;
-    },
-    viewMeta: function (meta) {
-      var that = this;
-
-      that.meta.view = Object.assign({}, meta);
-      if (that.meta.view.type == "text") {
-        that.meta.view.content = marked(that.meta.view.content);
-      }
-    },
-    onSwitchMetaBox: function () {},
-    login: async function () {
-      var that = this;
-      var data = new FormData();
-      data.append("uid", that.user.username);
-      data.append("password", that.user.password);
-      var res = await axios.post("index.php?api&v1&user&login", data);
-      if (res.data.code == 200) {
-        that.user = res.data.data;
-        console.log("login success");
-      }
-    },
   },
 };
 </script>
 
 <style>
-.metaBox {
-  padding: 0.8rem;
-  margin-top: 0.8rem;
-  margin-bottom: 0.8rem;
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
-  word-break: break-all;
-  border-radius: 12px;
-  background: #f2f2f2;
-  box-shadow: 8px 8px 16px #e7e7e7, -8px -8px 16px #ffffff;
-}
 </style>
