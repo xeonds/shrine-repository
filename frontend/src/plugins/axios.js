@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost/repo/";
+axios.defaults.baseURL = ""; //build时改为""，开发时改为"http://localhost/repo/"
 axios.defaults.headers.post["Content-Type"] = "application/json; charset=utf-8";
 axios.defaults.crossDomain = true;
 axios.defaults.withCredentials = true; //设置cross跨域 并设置访问权限 允许跨域携带cookie信息

@@ -6,15 +6,6 @@ module.exports = defineConfig({
     open: true,
     host: "localhost",
     port: "6431",
-    proxy: {
-      "http://localhost:6431/": {
-        target: "http://localhost/repo/",
-        changeOrigin: true, // 是否允许跨越, 开发环境中使用
-        // pathRewrite: {
-        //   "^/api": "",
-        // },
-      },
-    },
   },
   outputDir: "../static/",
 });
