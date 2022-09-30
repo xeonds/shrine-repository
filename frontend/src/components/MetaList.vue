@@ -2,14 +2,6 @@
   <div class="tab-pane active" id="home" style="width: 100%; max-width: 768px">
     <div class="d-flex flex-row align-items-center justify-content-between">
       <h4>{{ $route.params.id == "" ? "Home" : $route.params.id }}</h4>
-      <button
-        href="#"
-        class="btn btn-primary"
-        data-toggle="modal"
-        data-target="#createMeta"
-      >
-        New
-      </button>
     </div>
     <br />
     <div class="d-flex flex-row flex-wrap">
@@ -18,6 +10,7 @@
         :key="meta.id"
         :meta="meta"
         :expand-len="32"
+        :style="meta.tag.includes('article') ? 'width:100%' : 'width:40%'"
       />
     </div>
   </div>

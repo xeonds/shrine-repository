@@ -68,7 +68,7 @@ export default {
       var res = await axios.post("index.php?api&v1&user&register", data);
       alert(res.data.msg);
       if (res.data.code == 200) {
-        window.location.href = "#/home";
+        window.location.href = "#";
       }
     },
   },

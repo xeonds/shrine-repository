@@ -70,7 +70,7 @@ export default {
       if (res.data.code == 200) {
         alert(res.data.msg);
         localStorage.setItem("userInfo", JSON.stringify(res.data.data));
-        window.location.href = "#/home";
+        window.location.href = "#";
       }
     },
   },

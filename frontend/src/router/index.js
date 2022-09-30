@@ -8,6 +8,8 @@ import MetaList from "../components/MetaList.vue";
 import TagList from "../components/TagList.vue";
 import OverView from "../components/OverView.vue";
 import DataAnalysis from "../components/DataAnalysis.vue";
+import MetaEditor from "../components/MetaEditor.vue";
+import ConfigList from "../components/ConfigList.vue";
 
 const routes = [
   {
@@ -23,16 +25,16 @@ const routes = [
         path: "tag/:id",
         component: MetaList,
       },
-      {
-        path: ":user_id",
-        component: UserView,
-      },
-      {
-        path: "user",
-        component: UserView,
-        children: [{ path: "analysis", component: DataAnalysis }],
-      },
-      { path: "meta/:meta_id", component: MetaView },
+    ],
+  },
+  { path: "/meta/:meta_id", component: MetaView },
+  {
+    path: "/user",
+    component: UserView,
+    children: [
+      { path: "", component: DataAnalysis },
+      { path: "meta", component: MetaEditor },
+      { path: "advanced", component: ConfigList },
     ],
   },
   { path: "/user/register", component: RegisterView },

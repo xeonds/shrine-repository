@@ -25,15 +25,30 @@
         >
       </p>
     </div>
-    <div
-      id="main"
-      class="d-flex flex-row align-items-begin justify-content-center"
+    <!-- Nav tabs -->
+    <nav
+      class="
+        navbar navbar-expand
+        bg-light
+        navbar-light
+        justify-content-start justify-content-sm-center
+      "
     >
+      <div class="navbar justify-content-sm-center">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">Home</router-link>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- Main area -->
+    <div class="d-flex flex-row align-items-begin justify-content-center">
       <div id="left">
         <div id="index"></div>
         <div id="detail"></div>
       </div>
-      <div id="content" v-html="meta.html" v-highlight></div>
+      <div id="content" class="bg-light" v-html="meta.html" v-highlight></div>
       <div id="comments">#Comments</div>
     </div>
     <div
@@ -57,7 +72,7 @@
   padding: 2rem;
   min-height: 80vh;
   width: 80%;
-  max-width: 800px;
+  max-width: 900px;
 }
 
 #index {

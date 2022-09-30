@@ -1,9 +1,8 @@
 <template>
-  <div
-    id="main"
-    class="d-flex flex-column align-items-begin justify-content-center"
-  >
-    <h4>OverView</h4>
+  <div class="tab-pane active" style="width: 100%; max-width: 768px">
+    <div class="d-flex flex-row align-items-center justify-content-between">
+      <h4>OverView</h4>
+    </div>
     <div>
       <h5>Recent Meta</h5>
       <meta-list></meta-list>
@@ -23,16 +22,5 @@ export default {
   data: function () {
     return {};
   },
-  created: async function () {
-    // var baseURL = "index.php?api&v1&";
-    // var tmp = "";
-    // var that = this;
-    // tmp = await axios.get(baseURL + "config&get");
-    // that.config = tmp.data.data;
-    // tmp = await axios.get(baseURL + "meta&get_meta");
-    // that.meta.metalist = tmp.data.data;
-    // that.getTagList();
-  },
-  methods: {},
 };
 </script>
