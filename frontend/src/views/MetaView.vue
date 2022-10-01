@@ -14,13 +14,9 @@
     >
       <h1>{{ meta.title }}</h1>
       <p class="text-secondary">
-        <date-filter :timestamp="meta.time"></date-filter> ·
-        {{ meta.author }}
-      </p>
-      <p class="text-secondary">
-        <span class="text-primary"><b>|</b></span> {{ meta.type }}
-        <span class="text-primary"> · </span
-        ><span :key="tag" v-for="tag in meta.tag"
+        <date-filter :timestamp="meta.time"></date-filter> · {{ meta.author }} ·
+        {{ meta.type }}
+        <span :key="tag" v-for="tag in meta.tag"
           ><span class="text-primary">#</span>{{ tag }}&nbsp;</span
         >
       </p>
